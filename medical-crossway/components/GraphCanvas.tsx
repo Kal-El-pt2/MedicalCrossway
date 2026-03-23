@@ -1,12 +1,21 @@
 'use client'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useRef, useState } from 'react'
 import { Task, Phase, PHASES, Status } from '@/lib/types'
 import TaskNode from './TaskNode'
 import DetailPanel from './DetailPanel'
 import PhaseFilter from './PhaseFilter'
+import Link from 'next/link'
 
 const NODE_W = 180, NODE_H = 100, COL_W = 260, PAD_X = 40, PAD_Y = 100, ROW_H = 130
 const PHASE_ORDER: Phase[] = ['premed', 'mcat', 'medschool', 'residency', 'surgery']
+
+const COUNTRY_NAMES: Record<string, string> = {
+  us: '🇺🇸 United States',
+  uk: '🇬🇧 United Kingdom',
+  ca: '🇨🇦 Canada',
+  au: '🇦🇺 Australia',
+  in: '🇮🇳 India',
+}
 
 function layoutNodes(tasks: Task[]) {
   const cols: Record<string, { x: number; rows: Task[] }> = {}
@@ -21,9 +30,12 @@ function layoutNodes(tasks: Task[]) {
   return positions
 }
 
-interface Props { initialTasks: Task[] }
+interface Props {
+  initialTasks: Task[]
+  country: string
+}
 
-export default function GraphCanvas({ initialTasks }: Props) {
+export default function GraphCanvas({ initialTasks, country }: Props) {
   const [tasks, setTasks] = useState<Task[]>(initialTasks)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [activePhase, setActivePhase] = useState<Phase | 'all'>('all')
@@ -54,7 +66,6 @@ export default function GraphCanvas({ initialTasks }: Props) {
     setSelectedId(null)
   }
 
-  // Draw SVG edges
   const edges: React.ReactNode[] = []
   visible.forEach(t => {
     const p1 = positions[t.id]
@@ -93,20 +104,31 @@ export default function GraphCanvas({ initialTasks }: Props) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+
       {/* Top bar */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '10px 16px', borderBottom: '0.5px solid var(--color-border-tertiary)',
         flexShrink: 0, gap: 12, flexWrap: 'wrap',
       }}>
-        <h1 style={{ fontSize: 20, fontWeight: 600, color: 'var(--color-text-primary)', letterSpacing: -0.3 }}>
-          Medical <span style={{ color: '#3C3489' }}>Crossway</span>
-        </h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Link href="/" style={{ fontSize: 12, color: 'var(--color-text-tertiary)', textDecoration: 'none' }}>
+            ← Home
+          </Link>
+          <span style={{ color: 'var(--color-text-tertiary)' }}>/</span>
+          <h1 style={{ fontSize: 20, fontWeight: 600, color: 'var(--color-text-primary)', letterSpacing: -0.3 }}>
+            Medical <span style={{ color: '#3C3489' }}>Crossway</span>
+          </h1>
+          <span style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginLeft: 4 }}>
+            {COUNTRY_NAMES[country]}
+          </span>
+        </div>
         <PhaseFilter active={activePhase} onChange={p => { setActivePhase(p); setSelectedId(null) }} />
       </div>
 
       {/* Main */}
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+
         {/* Canvas */}
         <div style={{
           flex: 1, overflow: 'auto', position: 'relative',
@@ -115,21 +137,20 @@ export default function GraphCanvas({ initialTasks }: Props) {
           backgroundSize: '24px 24px',
         }}>
           <div style={{ position: 'relative', width: canvasW, height: canvasH, minWidth: '100%', minHeight: '100%' }}>
-            {/* Edges */}
-            <svg ref={svgRef} style={{ position: 'absolute', top: 0, left: 0, overflow: 'visible', pointerEvents: 'none' }}
+            <svg ref={svgRef}
+              style={{ position: 'absolute', top: 0, left: 0, overflow: 'visible', pointerEvents: 'none' }}
               width={canvasW} height={canvasH}>
               <defs>
                 <marker id="arr-next" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                  <path d="M2 1L8 5L2 9" fill="none" stroke="var(--color-text-tertiary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 1L8 5L2 9" fill="none" stroke="var(--color-text-tertiary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </marker>
                 <marker id="arr-par" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                  <path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </marker>
               </defs>
               {edges}
             </svg>
 
-            {/* Nodes */}
             {visible.map(t => {
               const pos = positions[t.id]
               return (
@@ -172,6 +193,7 @@ export default function GraphCanvas({ initialTasks }: Props) {
           <span style={{ color: 'var(--color-border-secondary)', marginLeft: 10 }}>● </span>To do
         </span>
       </div>
+
     </div>
   )
 }

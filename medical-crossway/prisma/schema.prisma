@@ -5,6 +5,11 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+model Country {
+  code        String  @id   // 'us', 'uk', etc.
+  name        String
+  tasks       Task[]
+}
 
 model Task {
   id            String   @id @default(cuid())
@@ -12,6 +17,8 @@ model Task {
   description   String
   phase         String
   status        String   @default("todo")
+  countryCode String
+  country     Country  @relation(fields: [countryCode], references: [code])
 
   requirements  Json     @default("[]")
   nextTasks     Json     @default("[]")
