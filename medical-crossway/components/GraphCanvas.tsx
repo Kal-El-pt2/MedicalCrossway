@@ -5,7 +5,7 @@ import TaskNode from './TaskNode'
 import DetailPanel from './DetailPanel'
 import PhaseFilter from './PhaseFilter'
 
-const NODE_W = 180, NODE_H = 78, COL_W = 220, PAD_X = 20, PAD_Y = 80, ROW_H = 100
+const NODE_W = 180, NODE_H = 100, COL_W = 260, PAD_X = 40, PAD_Y = 100, ROW_H = 130
 const PHASE_ORDER: Phase[] = ['premed', 'mcat', 'medschool', 'residency', 'surgery']
 
 function layoutNodes(tasks: Task[]) {

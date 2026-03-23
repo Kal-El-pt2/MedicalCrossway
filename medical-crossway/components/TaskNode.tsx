@@ -22,13 +22,13 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
   const statusStyle: Record<Status, React.CSSProperties> = {
     complete: { background: '#E1F5EE', color: '#0F6E56' },
     progress: { background: '#FAEEDA', color: '#633806' },
-    todo:     { background: '#2a2a2a', color: '#888' },
+    todo: { background: 'var(--color-background-secondary)', color: 'var(--color-text-secondary)' },
   }
 
   const statusLabel: Record<Status, string> = {
     complete: '✓ Complete',
     progress: '⧗ In progress',
-    todo:     '○ To do',
+    todo: '○ To do',
   }
 
   return (
@@ -38,7 +38,7 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
         width: 180,
         borderRadius: 10,
         border: `1.5px solid ${selected ? phase.color : phase.border}`,
-        background: '#1a1a1a',
+        background: 'var(--color-background-primary)',
         cursor: 'pointer',
         boxShadow: selected ? `0 0 0 3px ${phase.border}` : 'none',
         transition: 'transform .15s, box-shadow .15s',
@@ -66,7 +66,7 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
           fontSize: 13,
           fontWeight: 500,
           lineHeight: 1.4,
-          color: '#111',
+          color: '#111',          // always dark — sits on a light phase.bg
         }}>
           {task.title}
         </div>
@@ -78,7 +78,7 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '6px 10px 8px',
-        background: '#1a1a1a',
+        background: 'var(--color-background-primary)',
         gap: 6,
       }}>
         <span
