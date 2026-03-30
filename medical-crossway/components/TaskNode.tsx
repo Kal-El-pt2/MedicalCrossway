@@ -33,27 +33,32 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
   }
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }}
       className={`
-        w-[180px] text-left rounded-xl overflow-hidden
-        border transition-all duration-150
+      w-[180px] text-left rounded-xl overflow-hidden
+      border transition-all duration-150 cursor-pointer
 
-        ${selected
+      ${selected
           ? 'ring-2 ring-[var(--accent-primary)] -translate-y-1'
           : 'border-white/10 hover:-translate-y-0.5'
         }
 
-        bg-[rgba(255,255,255,0.02)]
-      `}
+      bg-[rgba(255,255,255,0.02)]
+    `}
     >
-      {/* 🔥 HEADER (RESTORED STRONG IDENTITY) */}
+      {/* HEADER */}
       <div
         className="px-3 py-2 border-b border-black/10"
-        style={{
-          background: phase.bg,
-        }}
+        style={{ background: phase.bg }}
       >
         <div
           className="text-[9px] font-semibold tracking-widest uppercase mb-1"
@@ -71,12 +76,15 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
       <div className="flex items-center justify-between px-3 py-2 gap-2">
         <button
           type="button"
-          onClick={cycleStatus}
+          onClick={(e) => {
+            e.stopPropagation()   // 🔥 IMPORTANT
+            cycleStatus(e)
+          }}
           className={`
-            text-[10px] font-medium px-2.5 py-1 rounded-full
-            transition
-            ${STATUS_CLASSES[task.status]}
-          `}
+          text-[10px] font-medium px-2.5 py-1 rounded-full
+          transition
+          ${STATUS_CLASSES[task.status]}
+        `}
         >
           {STATUS_LABEL[task.status]}
         </button>
@@ -87,6 +95,6 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
           </span>
         )}
       </div>
-    </button>
+    </div>
   )
 }
