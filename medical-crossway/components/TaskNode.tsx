@@ -1,4 +1,5 @@
 'use client'
+
 import { Task, PHASES, Status } from '@/lib/types'
 
 interface Props {
@@ -10,6 +11,18 @@ interface Props {
 
 const STATUS_CYCLE: Status[] = ['todo', 'progress', 'complete']
 
+const STATUS_CLASSES: Record<Status, string> = {
+  complete: 'bg-green-100 text-green-700',
+  progress: 'bg-yellow-100 text-yellow-700',
+  todo: 'bg-white/5 text-[var(--text-secondary)] border border-white/10',
+}
+
+const STATUS_LABEL: Record<Status, string> = {
+  complete: '✓ Complete',
+  progress: '⧗ In progress',
+  todo: '○ To do',
+}
+
 export default function TaskNode({ task, selected, onClick, onStatusChange }: Props) {
   const phase = PHASES[task.phase]
 
@@ -19,94 +32,61 @@ export default function TaskNode({ task, selected, onClick, onStatusChange }: Pr
     onStatusChange(next)
   }
 
-  const statusStyle: Record<Status, React.CSSProperties> = {
-    complete: { background: '#E1F5EE', color: '#0F6E56' },
-    progress: { background: '#FAEEDA', color: '#633806' },
-    todo: { background: 'var(--color-background-secondary)', color: 'var(--color-text-secondary)' },
-  }
-
-  const statusLabel: Record<Status, string> = {
-    complete: '✓ Complete',
-    progress: '⧗ In progress',
-    todo: '○ To do',
-  }
-
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
-      style={{
-        width: 180,
-        borderRadius: 10,
-        border: `1.5px solid ${selected ? phase.color : phase.border}`,
-        background: 'var(--color-background-primary)',
-        cursor: 'pointer',
-        boxShadow: selected ? `0 0 0 3px ${phase.border}` : 'none',
-        transition: 'transform .15s, box-shadow .15s',
-        transform: selected ? 'translateY(-2px)' : 'none',
-        userSelect: 'none',
-        overflow: 'hidden',
-      }}
+      className={`
+        w-[180px] text-left rounded-xl overflow-hidden
+        border transition-all duration-150
+
+        ${selected
+          ? 'ring-2 ring-[var(--accent-primary)] -translate-y-1'
+          : 'border-white/10 hover:-translate-y-0.5'
+        }
+
+        bg-[rgba(255,255,255,0.02)]
+      `}
     >
-      {/* Header */}
-      <div style={{
-        padding: '10px 12px 8px',
-        background: phase.bg,
-      }}>
-        <div style={{
-          fontSize: 9,
-          fontWeight: 600,
-          letterSpacing: 1,
-          textTransform: 'uppercase',
-          color: phase.color,
-          marginBottom: 5,
-        }}>
+      {/* 🔥 HEADER (RESTORED STRONG IDENTITY) */}
+      <div
+        className="px-3 py-2 border-b border-black/10"
+        style={{
+          background: phase.bg,
+        }}
+      >
+        <div
+          className="text-[9px] font-semibold tracking-widest uppercase mb-1"
+          style={{ color: phase.color }}
+        >
           {phase.label}
         </div>
-        <div style={{
-          fontSize: 13,
-          fontWeight: 500,
-          lineHeight: 1.4,
-          color: '#111',          // always dark — sits on a light phase.bg
-        }}>
+
+        <div className="text-sm font-medium leading-snug text-black">
           {task.title}
         </div>
       </div>
 
-      {/* Footer */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '6px 10px 8px',
-        background: 'var(--color-background-primary)',
-        gap: 6,
-      }}>
-        <span
+      {/* FOOTER */}
+      <div className="flex items-center justify-between px-3 py-2 gap-2">
+        <button
+          type="button"
           onClick={cycleStatus}
-          style={{
-            fontSize: 10,
-            fontWeight: 500,
-            padding: '3px 8px',
-            borderRadius: 10,
-            cursor: 'pointer',
-            ...statusStyle[task.status],
-          }}
+          className={`
+            text-[10px] font-medium px-2.5 py-1 rounded-full
+            transition
+            ${STATUS_CLASSES[task.status]}
+          `}
         >
-          {statusLabel[task.status]}
-        </span>
+          {STATUS_LABEL[task.status]}
+        </button>
+
         {task.parallelTasks.length > 0 && (
-          <span style={{
-            fontSize: 9,
-            padding: '2px 6px',
-            borderRadius: 8,
-            background: '#FAEEDA',
-            color: '#633806',
-            fontWeight: 500,
-          }}>
+          <span className="text-[9px] px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 font-medium">
             parallel
           </span>
         )}
       </div>
-    </div>
+    </button>
   )
 }
