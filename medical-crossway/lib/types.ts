@@ -13,6 +13,7 @@ export interface Task {
   description: string;
   phase: Phase;
   status: Status;
+  countryCode: string;
   requirements: string[];
   nextTasks: string[];
   parallelTasks: string[];

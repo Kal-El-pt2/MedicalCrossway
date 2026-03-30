@@ -10,7 +10,7 @@ export default async function JourneyPage({
 }: {
   params: Promise<{ country: string }>
 }) {
-  const { country } = await params // ✅ FIX
+  const { country } = await params 
 
   if (!SUPPORTED_COUNTRIES.includes(country)) {
     notFound()
