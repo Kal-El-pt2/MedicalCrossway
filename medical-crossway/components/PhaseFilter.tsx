@@ -19,12 +19,7 @@ export default function PhaseFilter({ active, onChange }: Props) {
 
   return (
     <div
-      className="
-        flex flex-wrap gap-2
-        p-1.5 rounded-2xl
-        bg-white/5 border border-white/10
-        backdrop-blur-md
-      "
+      className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md"
       role="group"
       aria-label="Filter by medical phase"
     >

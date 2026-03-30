@@ -128,11 +128,7 @@ export default function GraphCanvas({ initialTasks, country }: Props) {
     <div className="flex flex-col h-screen overflow-hidden">
 
       {/* ================= HEADER ================= */}
-      <header className="
-        flex items-center justify-between
-        px-4 py-3 border-b border-white/10
-        flex-wrap gap-3
-      ">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-white/10 flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <Link href="/" className="text-xs text-[var(--text-tertiary)] hover:underline">
             ← Home
@@ -162,12 +158,7 @@ export default function GraphCanvas({ initialTasks, country }: Props) {
       <main className="flex flex-1 overflow-hidden">
 
         {/* Canvas */}
-        <section className="
-          flex-1 overflow-auto relative
-          bg-[var(--bg-secondary)]
-          [background-image:radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)]
-          [background-size:24px_24px]
-        ">
+        <section className="flex-1 overflow-auto relative bg-[var(--bg-secondary)] [background-image:radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:24px_24px]">
           <div
             className="relative min-w-full min-h-full"
             style={{ width: canvasW, height: canvasH }}
@@ -225,11 +216,7 @@ export default function GraphCanvas({ initialTasks, country }: Props) {
       </main>
 
       {/* ================= FOOTER ================= */}
-      <footer className="
-        px-4 py-2 border-t border-white/10
-        flex items-center gap-4 flex-wrap text-xs
-        text-[var(--text-secondary)]
-      ">
+      <footer className="px-4 py-2 border-t border-white/10 flex items-center gap-4 flex-wrap text-xs text-[var(--text-secondary)]">
         <span>→ Next task</span>
         <span className="text-[#BA7517]">⇢ Parallel</span>
 

@@ -7,6 +7,7 @@ type Country = {
 }
 
 export default function CountryCard({ country }: { country: Country }) {
+  console.log(country)
   return (
     <div
       className={`
@@ -23,6 +24,7 @@ export default function CountryCard({ country }: { country: Country }) {
         ${!country.available ? "opacity-40 grayscale cursor-not-allowed" : "cursor-pointer"}
       `}
     >
+      
       {/* Top Row */}
       <div className="flex items-center justify-between mb-3">
         <span className="text-xl">{country.flag}</span>
