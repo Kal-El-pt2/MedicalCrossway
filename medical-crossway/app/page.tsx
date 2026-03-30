@@ -41,82 +41,78 @@ const COUNTRIES = [
 
 export default function LandingPage() {
   return (
-    <main style={{
-      minHeight: '100vh',
-      background: 'var(--color-background-tertiary)',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '40px 20px',
-    }}>
+    <main className="relative min-h-screen flex flex-col items-center justify-center px-6 py-12 overflow-hidden">
+
+      {/* 🌟 HERO GLOW */}
+      <div className="absolute top-[-120px] w-[600px] h-[600px]
+        bg-[radial-gradient(circle,rgba(108,99,255,0.25),transparent_70%)]
+        blur-3xl opacity-60 pointer-events-none"
+      />
 
       {/* Hero */}
-      <div style={{ textAlign: 'center', marginBottom: 56, maxWidth: 560 }}>
-        <div style={{
-          display: 'inline-block',
-          fontSize: 11, fontWeight: 600, letterSpacing: 2,
-          textTransform: 'uppercase',
-          color: '#3C3489',
-          background: '#EEEDFE',
-          padding: '4px 14px', borderRadius: 20,
-          marginBottom: 20,
-        }}>
+      <div className="text-center max-w-xl mb-14 relative z-10">
+
+        {/* Badge */}
+        <div className="
+          inline-block text-[10px] font-semibold tracking-widest uppercase
+          text-[var(--accent-primary)]
+          bg-[rgba(108,99,255,0.1)]
+          px-4 py-1 rounded-full mb-5
+          border border-[rgba(108,99,255,0.2)]
+        ">
           Medical Education Tracker
         </div>
-        <h1 style={{
-          fontSize: 48, fontWeight: 700,
-          color: 'var(--color-text-primary)',
-          lineHeight: 1.15, letterSpacing: -1.5,
-          marginBottom: 16,
-        }}>
-          Medical{' '}
-          <span style={{ color: '#3C3489' }}>Crossway</span>
+
+        {/* Title */}
+        <h1 className="
+          text-5xl font-bold leading-tight tracking-tight mb-4
+          bg-gradient-to-r from-white via-[#c7c7ff] to-[var(--accent-primary)]
+          text-transparent bg-clip-text
+        ">
+          Medical Crossway
         </h1>
-        <p style={{
-          fontSize: 16, lineHeight: 1.7,
-          color: 'var(--color-text-secondary)',
-          maxWidth: 440, margin: '0 auto',
-        }}>
+
+        {/* Divider */}
+        <div className="w-20 h-1 mx-auto mb-6 rounded-full 
+          bg-gradient-to-r from-[var(--accent-primary)] to-transparent"
+        />
+
+        {/* Subtitle */}
+        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
           Track every step of your journey from high school graduation
           to becoming a surgeon. Select your country to get started.
         </p>
       </div>
 
-      {/* Country grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: 16,
-        width: '100%',
-        maxWidth: 800,
-      }}>
-        {COUNTRIES.map(country => (
-          country.available ? (
-            <Link
-              key={country.code}
-              href={`/journey/${country.code}`}
-              style={{ textDecoration: 'none' }}
-            >
-              <CountryCard country={country} />
-            </Link>
-          ) : (
-            <div key={country.code} style={{ cursor: 'not-allowed' }}>
-              <CountryCard country={country} />
-            </div>
-          )
-        ))}
+      {/* 🌟 GRID LIGHTING */}
+      <div className="relative w-full max-w-4xl">
+
+        <div className="absolute inset-0 
+          bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_70%)]
+          pointer-events-none"
+        />
+
+        {/* Grid */}
+        <div className="
+          grid gap-5 relative z-10
+          grid-cols-1 sm:grid-cols-2 md:grid-cols-3
+        ">
+          {COUNTRIES.map(country => (
+            country.available ? (
+              <Link key={country.code} href={`/journey/${country.code}`}>
+                <CountryCard country={country} />
+              </Link>
+            ) : (
+              <CountryCard key={country.code} country={country} />
+            )
+          ))}
+        </div>
       </div>
 
       {/* Footer */}
-      <p style={{
-        marginTop: 48, fontSize: 12,
-        color: 'var(--color-text-tertiary)',
-        textAlign: 'center',
-      }}>
+      <p className="mt-14 text-xs text-[var(--text-tertiary)] text-center">
         More countries coming soon · Built for medical students worldwide
       </p>
     </main>
   )
 }
-  

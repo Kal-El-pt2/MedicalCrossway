@@ -1,5 +1,3 @@
-'use client'
-
 type Country = {
   code: string
   name: string
@@ -11,82 +9,47 @@ type Country = {
 export default function CountryCard({ country }: { country: Country }) {
   return (
     <div
-      style={{
-        background: 'var(--color-background-primary)',
-        border: `1.5px solid ${country.available ? '#CECBF6' : 'var(--color-border-tertiary)'}`,
-        borderRadius: 14,
-        padding: '20px 20px 18px',
-        transition: 'transform .15s, box-shadow .15s',
-        opacity: country.available ? 1 : 0.6,
-        position: 'relative',
-        height: '100%',
-      }}
-      onMouseEnter={e => {
-        if (!country.available) return
-        const el = e.currentTarget as HTMLDivElement
-        el.style.transform = 'translateY(-3px)'
-        el.style.boxShadow = '0 8px 24px rgba(83,74,183,0.12)'
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLDivElement
-        el.style.transform = 'none'
-        el.style.boxShadow = 'none'
-      }}
+      className={`
+        group relative rounded-2xl p-5 transition-all duration-300
+        border border-white/10
+        bg-[rgba(255,255,255,0.04)]
+        backdrop-blur-xl
+
+        hover:-translate-y-1
+        hover:bg-[rgba(255,255,255,0.06)]
+        hover:shadow-[0_10px_40px_rgba(0,0,0,0.6)]
+        hover:border-[rgba(108,99,255,0.6)]
+
+        ${!country.available ? "opacity-40 grayscale cursor-not-allowed" : "cursor-pointer"}
+      `}
     >
-      {!country.available && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 12,
-            right: 12,
-            fontSize: 9,
-            fontWeight: 600,
-            letterSpacing: 0.5,
-            textTransform: 'uppercase',
-            background: 'var(--color-background-secondary)',
-            color: 'var(--color-text-tertiary)',
-            padding: '3px 8px',
-            borderRadius: 10,
-          }}
-        >
-          Coming soon
-        </div>
-      )}
+      {/* Top Row */}
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xl">{country.flag}</span>
+        <span className="text-xs text-gray-400 font-semibold uppercase">
+          {country.code}
+        </span>
+      </div>
 
-      <div style={{ fontSize: 36, marginBottom: 12 }}>{country.flag}</div>
-
-      <div
-        style={{
-          fontSize: 15,
-          fontWeight: 600,
-          color: 'var(--color-text-primary)',
-          marginBottom: 6,
-        }}
-      >
+      {/* Title */}
+      <h3 className="text-lg font-semibold mb-1">
         {country.name}
-      </div>
+      </h3>
 
-      <div
-        style={{
-          fontSize: 12,
-          lineHeight: 1.5,
-          color: 'var(--color-text-secondary)',
-        }}
-      >
+      {/* Description */}
+      <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-3">
         {country.description}
-      </div>
+      </p>
 
-      {country.available && (
-        <div
-          style={{
-            marginTop: 16,
-            fontSize: 12,
-            color: '#534AB7',
-            fontWeight: 500,
-          }}
-        >
+      {/* CTA */}
+      {country.available ? (
+        <span className="text-sm text-[var(--accent-primary)] group-hover:underline">
           Start journey →
-        </div>
+        </span>
+      ) : (
+        <span className="text-xs text-[var(--text-tertiary)]">
+          Coming soon
+        </span>
       )}
     </div>
   )
