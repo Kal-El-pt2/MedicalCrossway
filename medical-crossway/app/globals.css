@@ -31,3 +31,43 @@ body::after {
   opacity: 0.03;
   pointer-events: none;
 }
+/* Base button */
+.phase-btn {
+  border: 1px solid transparent;
+}
+
+/* Active state */
+.phase-active {
+  transform: scale(1.02);
+}
+
+/* Phase colors */
+.phase-all {
+  --phase-bg: var(--text-primary);
+}
+
+.phase-premed {
+  --phase-bg: #3b82f6;
+}
+
+.phase-mcat {
+  --phase-bg: #f59e0b;
+}
+
+.phase-medschool {
+  --phase-bg: #8b5cf6;
+}
+
+.phase-residency {
+  --phase-bg: #10b981;
+}
+
+.phase-surgery {
+  --phase-bg: #ef4444;
+}
+
+/* Apply background + glow */
+.phase-active {
+  background: var(--phase-bg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}

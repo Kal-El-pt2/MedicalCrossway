@@ -1,4 +1,5 @@
 'use client'
+
 import { Phase, PHASES } from '@/lib/types'
 
 interface Props {
@@ -8,35 +9,51 @@ interface Props {
 
 export default function PhaseFilter({ active, onChange }: Props) {
   const phases = [
-    { key: 'all', label: 'All phases' },
-    ...Object.entries(PHASES).map(([key, val]) => ({ key, label: val.label })),
+    { key: 'all', label: 'All phases', className: 'phase-all' },
+    ...Object.entries(PHASES).map(([key, val]) => ({
+      key,
+      label: val.label,
+      className: `phase-${key}`, // 👈 class-based color system
+    })),
   ]
 
   return (
-    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-      {phases.map(p => (
-        <button
-          key={p.key}
-          onClick={() => onChange(p.key as Phase | 'all')}
-          style={{
-            fontSize: 11,
-            fontWeight: 500,
-            padding: '4px 12px',
-            borderRadius: 20,
-            border: '0.5px solid transparent',
-            cursor: 'pointer',
-            background: active === p.key
-              ? p.key === 'all'
-                ? 'var(--color-text-primary)'
-                : PHASES[p.key as Phase]?.color
-              : 'var(--color-background-secondary)',
-            color: active === p.key ? '#fff' : 'var(--color-text-secondary)',
-            transition: 'all .15s',
-          }}
-        >
-          {p.label}
-        </button>
-      ))}
+    <div
+      className="
+        flex flex-wrap gap-2
+        p-1.5 rounded-2xl
+        bg-white/5 border border-white/10
+        backdrop-blur-md
+      "
+      role="group"
+      aria-label="Filter by medical phase"
+    >
+      {phases.map(p => {
+        const isActive = active === p.key
+
+        return (
+          <button
+            type="button"
+            key={p.key}
+            onClick={() => onChange(p.key as Phase | 'all')}
+            aria-pressed={isActive} // 👈 Fixed here
+            className={`
+              phase-btn
+              ${p.className}
+
+              relative text-xs font-medium px-3 py-1.5 rounded-xl
+              transition-all duration-200
+
+              ${isActive
+                ? "phase-active text-white shadow-lg scale-[1.02]"
+                : "text-[var(--text-secondary)] hover:text-white"
+              }
+            `}
+          >
+            {p.label}
+          </button>
+        )
+      })}
     </div>
   )
 }
