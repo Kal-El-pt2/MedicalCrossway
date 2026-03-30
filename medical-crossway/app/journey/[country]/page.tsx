@@ -1,10 +1,12 @@
 import { prisma } from '@/lib/db'
 import { Task } from '@/lib/types'
-// 1. Import the Task type from Prisma and alias it
-import { Task as PrismaTask } from '@prisma/client' 
 import GraphCanvas from '@/components/GraphCanvas'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+
+// 1. Extract the type directly from the prisma call result
+// This avoids the "no exported member Task" error entirely.
+type PrismaTask = Awaited<ReturnType<typeof prisma.task.findMany>>[number];
 
 const SUPPORTED_COUNTRIES = ['us'] as const
 type Country = typeof SUPPORTED_COUNTRIES[number]
@@ -29,7 +31,7 @@ export async function generateMetadata({
 
 function safeParseArray(value: unknown): string[] {
   if (!value) return []
-  if (Array.isArray(value)) return value as string[] // Prisma Json type cast
+  if (Array.isArray(value)) return value as string[]
   if (typeof value === 'string') {
     try {
       return JSON.parse(value)
@@ -51,7 +53,7 @@ export default async function JourneyPage({
     notFound()
   }
 
-  // 'raw' is automatically typed as PrismaTask[] by Prisma
+  // Prisma automatically types 'raw' based on your schema
   const raw = await prisma.task.findMany({
     where: { countryCode: country },
     orderBy: { createdAt: 'asc' },
@@ -61,16 +63,14 @@ export default async function JourneyPage({
     notFound()
   }
 
-  // 2. Explicitly type 't' as 'PrismaTask'
+  // 2. Use the extracted 'PrismaTask' type here
   const tasks: Task[] = raw.map((t: PrismaTask) => ({
     ...t,
-    // Cast Enums/Unions to your local Task type definitions
     phase: t.phase as Task['phase'],
     status: t.status as Task['status'],
     requirements: safeParseArray(t.requirements),
     nextTasks: safeParseArray(t.nextTasks),
     parallelTasks: safeParseArray(t.parallelTasks),
-    // Convert Dates to strings for Client Components
     createdAt: t.createdAt.toISOString(),
     updatedAt: t.updatedAt.toISOString(),
   }))
