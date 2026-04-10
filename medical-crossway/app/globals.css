@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme {
+  --font-nunito: 'Nunito', sans-serif;
+  --font-fredoka: 'Fredoka One', cursive;
+}
+
 :root {
   --bg-primary: #0a0a0f;
   --bg-secondary: #11111a;
