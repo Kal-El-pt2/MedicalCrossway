@@ -170,7 +170,7 @@ function StepRow({ step, index }: { step: RoadmapStep; index: number }) {
 // ─── Main Component ─────────────────────────────────────────────────────────
 
 export default function LandingPage() {
-  const [phase, setPhase] = useState<Phase>('lamp')
+  const [phase, setPhase] = useState<Phase>('roadmap')
   const [selectedCountry, setSelected] = useState<Country | null>(
     COUNTRIES.find(c => c.code === 'in') ?? null
   )
