@@ -171,12 +171,14 @@ function StepRow({ step, index }: { step: RoadmapStep; index: number }) {
 
 export default function LandingPage() {
   const [phase, setPhase] = useState<Phase>('lamp')
-  const [selectedCountry, setSelected] = useState<Country | null>(null)
+  const [selectedCountry, setSelected] = useState<Country | null>(
+    COUNTRIES.find(c => c.code === 'in') ?? null
+  )
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('speech'), 800)
-    const t2 = setTimeout(() => setPhase('countries'), 4500)
-    return () => { clearTimeout(t1); clearTimeout(t2) }
+//    const t1 = setTimeout(() => setPhase('speech'), 800)
+//  const t2 = setTimeout(() => setPhase('countries'), 4500)
+//    return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
   const showHeroLamp = phase === 'countries' || phase === 'roadmap'
