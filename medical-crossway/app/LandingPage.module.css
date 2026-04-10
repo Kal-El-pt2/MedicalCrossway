@@ -1,0 +1,309 @@
+/* LandingPage.module.css */
+
+.main {
+  --bg-color: #f2f6ee; /* Light mint background from image */
+  --path-color: #d1c8bd; /* Tan road color */
+  --text-main: #3d3d3d;
+  --text-secondary: #5f6368;
+  --accent-primary: #1d9e75; /* Medical green */
+  
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* The Sun Decoration */
+.glowBlob {
+  position: absolute;
+  top: 60px;
+  right: 10%;
+  width: 100px;
+  height: 100px;
+  background: #fef3c7;
+  border-radius: 50%;
+  box-shadow: 0 0 40px #fde68a;
+  z-index: 1;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────── */
+
+.hero {
+  text-align: center;
+  max-width: 600px;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.title {
+  font-family: 'Fredoka One', cursive, sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  color: #2d3748;
+  margin: 10px 0;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── Speech Bubble ────────────────────────────────────────────── */
+
+.speech {
+  position: relative;
+  background: white;
+  border: 3px solid var(--path-color);
+  border-radius: 24px;
+  padding: 24px 32px;
+  max-width: 450px;
+  text-align: center;
+  margin: 20px auto;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.05);
+  z-index: 10;
+}
+
+.speechText {
+  color: #4a5568;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── Roadmap & Path Logic ──────────────────────────────────────── */
+
+.roadmapSection {
+  /* ── Source of truth ── */
+  --road-width: 32px;
+  --left-padding: 150px;
+  --road-left: calc(var(--left-padding) + 18px); /* 150 + half of 68px dot = center of road */
+  --road-right-edge: calc(var(--road-left) + var(--road-width) / 2); /* right edge of road strip */
+
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  margin: 0 auto;
+  padding-top: 80px;
+  padding-left: var(--left-padding);
+  overflow: visible;
+}
+/* THE ROAD */
+.roadmapSection::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--road-left) - var(--road-width) / 2); /* center minus half width */
+  top: 0;
+  bottom: 0;
+  width: var(--road-width);
+  background: var(--path-color);
+  border-radius: 16px;
+  z-index: 1;
+}
+
+.roadmapSection::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--road-left) - 2px);
+  top: 20px;
+  bottom: 20px;
+  width: 4px;
+  border-left: 4px dashed rgba(255,255,255,0.5);
+  z-index: 15;   /* ← raise above branchContainer's z-index: 5 */
+  pointer-events: none;
+}
+.backBtn {
+  position: absolute;
+  left: 0; /* Positions it to the far left of the container */
+  top: 10px;
+  background: #2d3748;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  z-index: 20;
+  width: 140px; /* Fixed width so it sits neatly to the left of the road */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.backBtn:hover {
+  transform: translateX(-5px);
+  background: #1a202c;
+}
+
+.stepRow {
+  position: relative; /* Ensure this is relative */
+  z-index: 10;
+  margin-bottom: 60px; /* Increased margin to give branches room */
+}
+
+.stepInner {
+  display: flex;
+  gap: 30px; /* Space between the icon and the card */
+  align-items: center;
+}
+
+.dot {
+  width: 68px;
+  height: 68px;
+  background: white;
+  border: 4px solid var(--step-color);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.08);
+  margin-left: calc(-1 * var(--road-width) / 2 - 2px); /* snaps icon onto road center */
+}
+
+.card {
+  max-width: 320px; /* Limits main card width */
+  flex: 0 0 320px;
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--step-color);
+  margin-bottom: 2px;
+}
+
+.cardMeta {
+  font-size: 13px;
+  color: #718096;
+  margin-bottom: 10px;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--tag-bg);
+  color: var(--step-color);
+  border: 1px solid var(--tag-border);
+  margin-right: 6px;
+}
+
+/* ── Country Grid ─────────────────────────────────────────────── */
+
+.countryGrid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  width: 100%;
+  max-width: 900px;
+  z-index: 10;
+}
+
+.backBtn {
+  background: #2d3748;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 99px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.footer {
+  margin-top: 60px;
+  color: #718096;
+  font-weight: 500;
+}
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.lampHero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lampCenter {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.clickable:hover {
+  transform: translateY(-4px);
+}
+.branchWrapper {
+  position: absolute;
+  /* 168px (road left) + 32px (road width) = 200px */
+  left: 200px; 
+  top: 85px; /* Positions it just below the stage icon */
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
+
+/* ── Branch Road ──────────────────────────────────────────────── */
+
+.branchContainer {
+  width: 100%;
+  max-width: 500px;
+  overflow: visible;
+  z-index: 4;
+  margin-left: calc((var(--road-width))/ 2   + 2px ); /* starts at right edge of road */
+}
+.branchSvg {
+  width: 85%;
+  height: auto;       /* scales proportionally — no fixed px height */
+  display: block;
+  overflow: visible;
+}
+
+/* Remove the old fixed-position branchCard — card is now inside SVG */
+.branchCard { display: none; }
+
+.stepRow:has(.branchContainer) {
+  margin-bottom: 40px;  /* SVG height is auto, so normal gap is fine */
+}
+
+.branchCard:hover {
+  transform: translateY(-3px);
+}
+
+.branchTitle {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--branch-color);
+}
+
+.branchMeta {
+  font-size: 11px;
+  color: #718096;
+  margin-top: 2px;
+}
+
+/* Tighter gap — just enough for the branch card + a little breathing room */
+.stepRow:has(.branchContainer) {
+  margin-bottom: 80px;
+}
