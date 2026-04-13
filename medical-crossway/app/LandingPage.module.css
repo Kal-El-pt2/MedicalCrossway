@@ -42,17 +42,32 @@
 }
 
 .title {
-  font-family: 'Fredoka One', cursive, sans-serif;
-  font-size: 42px;
+  font-size: 52px; /* Adjusted for impact */
   font-weight: 800;
-  color: #2d3748;
-  margin: 10px 0;
+  letter-spacing: 0.05em; /* This gives it that professional serif look */
+  line-height: 1.1;
+  display: flex;
+  gap: 0; /* Keeps the words close but distinct */
+  text-transform: uppercase;
+  transform: translateY(-60px); 
+}
+/* This adds the space specifically after "MEDICAL" */
+.title span:first-child {
+  margin-right: 0.3em; /* Adjust this value for more or less space */
 }
 
+.textSlate {
+  color: #5B707B;
+}
+.textRed {
+  color: #E13939;
+}
 .subtitle {
-  font-size: 16px;
-  color: var(--text-secondary);
+  font-size: 18px;
+  color: #5B707B;
   font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-top: -55px;
 }
 
 /* ── Speech Bubble ────────────────────────────────────────────── */
@@ -177,6 +192,8 @@
 }
 
 .cardTitle {
+  font-family: inherit;
+  font-weight: 700;
   font-size: 18px;
   font-weight: 800;
   color: var(--step-color);
@@ -229,15 +246,18 @@
 }
 .titleRow {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .lampHero {
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translateY(5px); 
+  margin-bottom: 0px; 
 }
 
 .lampCenter {
