@@ -271,7 +271,7 @@
   max-width: 500px;
   overflow: visible;
   z-index: 4;
-  margin-left: calc((var(--road-width))/ 2   + 2px ); /* starts at right edge of road */
+  margin-left: calc((var(--road-width))/ 2   ); /* starts at right edge of road */
 }
 .branchSvg {
   width: 85%;
@@ -287,23 +287,44 @@
   margin-bottom: 40px;  /* SVG height is auto, so normal gap is fine */
 }
 
-.branchCard:hover {
-  transform: translateY(-3px);
+.branchRow {
+  display: flex;
+  align-items: flex-start;
+  margin-left: calc(-19 * var(--road-width) / 2 - 8px);
+  width: calc(100% + var(--road-width) / 2 + 2px);
+  position: relative;
+  z-index: 4;
+  overflow: visible;
 }
 
-.branchTitle {
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--branch-color);
+.branchLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: visible;
 }
 
-.branchMeta {
-  font-size: 11px;
-  color: #718096;
-  margin-top: 2px;
+.branchSpacer {
+  /* Exactly the road width — left SVG ends here, right SVG starts here */
+  width: var(--road-width);
+  flex-shrink: 0;
 }
 
-/* Tighter gap — just enough for the branch card + a little breathing room */
-.stepRow:has(.branchContainer) {
+.branchRightCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.branchSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.stepRow:has(.branchRow) {
   margin-bottom: 80px;
 }
