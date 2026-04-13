@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CountryCard from '@/components/CountryCard'
 import s from './LandingPage.module.css'
+import { Cinzel, Inter } from 'next/font/google'
+
+const cinzel = Cinzel({ subsets: ['latin'], weight: ['700', '800'] })
+const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600'] })
 
 type Country = { code: string; name: string; flag: string; description: string; available: boolean }
 type Phase = 'lamp' | 'speech' | 'countries' | 'roadmap'
@@ -274,11 +278,16 @@ export default function LandingPage() {
             {showHeroLamp && (
               <motion.div layoutId="lamp" key="lamp-small" className={s.lampHero}
                 initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}>
-                <LighthouseSvg size={32} />
+                {/* INCREASED SIZE TO 80 */}
+                <LighthouseSvg size={80} />
               </motion.div>
             )}
           </AnimatePresence>
-          <h1 className={s.title}>Medical Crossway</h1>
+          <h1 className={`${s.title} ${cinzel.className}`}>
+            <span className={s.textSlate}>MEDICAL </span>
+            <span className={s.textRed}>CROSS</span>
+            <span className={s.textSlate}>WAY</span>
+          </h1>
         </div>
         <p className={s.subtitle}>
           {phase === 'roadmap' ? `Pathway for ${selectedCountry?.name}` : "Charting your journey to become a surgeon."}
@@ -289,7 +298,8 @@ export default function LandingPage() {
         {(phase === 'lamp' || phase === 'speech') && (
           <motion.div layoutId="lamp" key="lamp-big" className={s.lampCenter}
             initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -40, opacity: 0 }}>
-            <LighthouseSvg size={80} />
+            {/* INCREASED SIZE TO 160 */}
+            <LighthouseSvg size={160} />
           </motion.div>
         )}
 
