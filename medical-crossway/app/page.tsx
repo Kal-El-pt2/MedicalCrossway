@@ -279,7 +279,7 @@ export default function LandingPage() {
               <motion.div layoutId="lamp" key="lamp-small" className={s.lampHero}
                 initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}>
                 {/* INCREASED SIZE TO 80 */}
-                <LighthouseSvg size={80} />
+                <LighthouseSvg size={100} />
               </motion.div>
             )}
           </AnimatePresence>
