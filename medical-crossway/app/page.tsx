@@ -170,10 +170,111 @@ const SchoolIcon = ({ color }: { color: string }) => (
   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><path d="M3 21h18M10 21V11m4 10V11M2 11l10-9 10 9" /></svg>
 )
 const HospitalIcon = ({ color }: { color: string }) => (
-  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM12 7v10M7 12h10" /></svg>
+  <svg width="680" height="520" viewBox="0 0 680 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="40" y="490" width="600" height="30" fill="#9b9b9b"/>
+  <polygon points="100,470 580,470 600,490 80,490" fill="#4a4a4a"/>
+
+  <rect x="100" y="240" width="480" height="230" rx="2" fill="#f0f0f0" stroke="#d0d0d0" stroke-width="1"/>
+  <rect x="210" y="140" width="260" height="100" fill="#f0f0f0"/>
+
+  <g fill="#c8e6f0" stroke="#333333" stroke-width="1.5">
+    <rect x="124" y="310" width="28" height="32" rx="2"/> <rect x="162" y="310" width="28" height="32" rx="2"/>
+    <rect x="200" y="310" width="28" height="32" rx="2"/> <rect x="238" y="310" width="28" height="32" rx="2"/>
+    <rect x="124" y="365" width="28" height="32" rx="2"/> <rect x="162" y="365" width="28" height="32" rx="2"/>
+    <rect x="200" y="365" width="28" height="32" rx="2"/> <rect x="238" y="365" width="28" height="32" rx="2"/>
+    <rect x="124" y="420" width="28" height="32" rx="2"/> <rect x="162" y="420" width="28" height="32" rx="2"/>
+    <rect x="200" y="420" width="28" height="32" rx="2"/> <rect x="238" y="420" width="28" height="32" rx="2"/>
+    <rect x="414" y="310" width="28" height="32" rx="2"/> <rect x="452" y="310" width="28" height="32" rx="2"/>
+    <rect x="490" y="310" width="28" height="32" rx="2"/> <rect x="528" y="310" width="28" height="32" rx="2"/>
+    <rect x="414" y="365" width="28" height="32" rx="2"/> <rect x="452" y="365" width="28" height="32" rx="2"/>
+    <rect x="490" y="365" width="28" height="32" rx="2"/> <rect x="528" y="365" width="28" height="32" rx="2"/>
+    <rect x="414" y="420" width="28" height="32" rx="2"/> <rect x="452" y="420" width="28" height="32" rx="2"/>
+    <rect x="490" y="420" width="28" height="32" rx="2"/> <rect x="528" y="420" width="28" height="32" rx="2"/>
+  </g>
+
+  <rect x="240" y="160" width="85" height="60" rx="2" fill="#c8e6f0" stroke="#9ab8c8" stroke-width="1"/>
+  <rect x="355" y="160" width="85" height="60" rx="2" fill="#c8e6f0" stroke="#9ab8c8" stroke-width="1"/>
+
+  <path d="M 280 310 L 280 470 L 400 470 L 400 310" stroke="#333333" stroke-width="6" stroke-linejoin="round" fill="none"/>
+  <rect x="290" y="310" width="100" height="160" fill="#c8e6f0"/>
+  <rect x="338" y="310" width="4" height="160" fill="#333333"/>
+
+  <rect x="190" y="255" width="300" height="45" fill="#2d4fa0"/>
+  <text x="340" y="278" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="800" fill="white">HOSPITAL</text>
+  <rect x="235" y="300" width="210" height="10" fill="#2d4fa0"/>
+
+  <rect x="210" y="140" width="18" height="100" fill="#5c84c4"/>
+  <rect x="452" y="140" width="18" height="100" fill="#5c84c4"/>
+  <rect x="210" y="120" width="260" height="15" fill="#5c84c4"/>
+  <rect x="100" y="240" width="480" height="12" fill="#5c84c4"/>
+
+  <rect x="270" y="0" width="140" height="120" fill="#2d4fa0"/>
+  <rect x="325" y="20" width="30" height="80" fill="#ff2b2b"/>
+  <rect x="300" y="45" width="80" height="30" fill="#ff2b2b"/>
+
+  <rect x="90" y="235" width="500" height="15" rx="7.5" fill="#2d4fa0"/>
+  <rect x="195" y="132" width="290" height="18" rx="9" fill="#2d4fa0"/>
+</svg>
 )
 const PlaneIcon = ({ color }: { color: string }) => (
-  <svg width="32" height="32" viewBox="0 0 24 24" fill={color}><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" /></svg>
+  <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Main Body / Fuselage */}
+    <path 
+      d="M10 45C10 45 15 40 30 42L85 53C85 53 90 54 90 57C90 60 85 61 80 60L15 52C10 51 8 48 10 45Z" 
+      fill="white" 
+      stroke="#333" 
+      strokeWidth="1.5"
+    />
+    
+    {/* Red Tail Section */}
+    <path 
+      d="M60 50C70 51 85 53 85 53C85 53 90 54 90 57C90 60 85 61 80 60C80 60 70 55 60 50Z" 
+      fill="#EF4444" 
+    />
+    
+    {/* Tail Fins */}
+    <path 
+      d="M75 51L85 42L95 44L85 54Z" 
+      fill="#EF4444" 
+      stroke="#333" 
+      strokeWidth="1"
+    />
+    <path 
+      d="M75 60L92 68L88 72L72 61Z" 
+      fill="#EF4444" 
+      stroke="#333" 
+      strokeWidth="1"
+    />
+
+    {/* Wings */}
+    <path 
+      d="M40 43L55 25L58 26L45 44Z" 
+      fill="white" 
+      stroke="#333" 
+      strokeWidth="1.5"
+    />
+    <path 
+      d="M45 54L75 85L82 83L55 56Z" 
+      fill="white" 
+      stroke="#333" 
+      strokeWidth="1.5" 
+    />
+
+    {/* Engines (with red cowls) */}
+    <rect x="35" y="40" width="10" height="5" rx="2" fill="white" stroke="#333" />
+    <rect x="35" y="40" width="3" height="5" rx="1" fill="#EF4444" />
+    
+    <rect x="42" y="58" width="12" height="6" rx="3" fill="white" stroke="#333" />
+    <rect x="42" y="58" width="4" height="6" rx="1" fill="#EF4444" />
+
+    {/* Windows (Blue) */}
+    <path d="M15 44L20 45L19 47L14 46Z" fill="#60A5FA" />
+    <circle cx="28" cy="48" r="1" fill="#60A5FA" />
+    <circle cx="32" cy="49" r="1" fill="#60A5FA" />
+    <circle cx="36" cy="50" r="1" fill="#60A5FA" />
+    <circle cx="42" cy="51" r="1" fill="#60A5FA" />
+    <circle cx="46" cy="52" r="1" fill="#60A5FA" />
+  </svg>
 )
 
 function stepVars(step: RoadmapStep): React.CSSProperties {
