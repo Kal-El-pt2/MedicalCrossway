@@ -1,4 +1,4 @@
-export default function Hospital({ color }: { color: string }) {
+export default function Hospital() {
     return (
         <svg width="680" height="520" viewBox="0 0 680 520" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="40" y="490" width="600" height="30" fill="#9b9b9b" />
