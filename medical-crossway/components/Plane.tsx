@@ -1,6 +1,6 @@
 import Image from 'next/image'
-
-export default function School({ size = 48 }: { size?: number }) {
+    
+export default function Plane({ size = 48 }: { size?: number }) {
   return (
     <div
       style={{
@@ -12,11 +12,11 @@ export default function School({ size = 48 }: { size?: number }) {
       }}
     >
       <Image
-        src="/school.png"
-        alt="School Icon"
+        src="/plane.png"
+        alt="Plane Icon"
         width={size}
         height={size}
-        className="schoolImg"   
+        className="planeImg"   
         style={{ objectFit: 'contain' }}
         priority
       />

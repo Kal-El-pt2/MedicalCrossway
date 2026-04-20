@@ -7,6 +7,7 @@ import { Cinzel } from 'next/font/google'
 import School from '@/components/School';
 import Hospital from '@/components/Hospital';
 import Lighthouse from '@/components/Lighthouse';
+import Plane from '@/components/Plane';
 import './globals.css';
 
 const cinzel = Cinzel({ subsets: ['latin'], weight: ['700', '800'] })
@@ -52,59 +53,94 @@ const ROADMAPS: Record<string, RoadmapStep[]> = {
   ]
 }
 
-const PlaneIcon = ({ color, size = 48 }: { color: string; size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 45C10 45 15 40 30 42L85 53C85 53 90 54 90 57C90 60 85 61 80 60L15 52C10 51 8 48 10 45Z" fill="white" stroke="#333" strokeWidth="1.5" />
-    <path d="M60 50C70 51 85 53 85 53C85 53 90 54 90 57C90 60 85 61 80 60C80 60 70 55 60 50Z" fill="#EF4444" />
-    <path d="M75 51L85 42L95 44L85 54Z" fill="#EF4444" stroke="#333" strokeWidth="1" />
-    <path d="M75 60L92 68L88 72L72 61Z" fill="#EF4444" stroke="#333" strokeWidth="1" />
-    <path d="M40 43L55 25L58 26L45 44Z" fill="white" stroke="#333" strokeWidth="1.5" />
-    <path d="M45 54L75 85L82 83L55 56Z" fill="white" stroke="#333" strokeWidth="1.5" />
-    <rect x="35" y="40" width="10" height="5" rx="2" fill="white" stroke="#333" />
-    <rect x="42" y="58" width="12" height="6" rx="3" fill="white" stroke="#333" />
-  </svg>
-)
-
 function StepRow({ step }: { step: RoadmapStep; index: number }) {
   const getIcon = () => {
-    const iconSize = 48;
     if (step.id === 'school' || step.id === 'undergrad') return <School size={56} />;
-    if (step.id === 'match' || step.id === 'abroad' || step.meta.includes('Russia')) return <PlaneIcon color={step.color} size={iconSize} />;
-    return <Hospital color={step.color} />;
-  }
+    if (step.id === 'mbbs') return <Hospital />;
+    if (step.id === 'match') return <Plane size={56} />;
+    return <Hospital />;
+  };
 
-  const leftBranches = step.branches?.filter(b => b.side === 'left') ?? []
-  const rightBranches = step.branches?.filter(b => (b.side ?? 'right') === 'right') ?? []
+  const leftBranches = step.branches?.filter(b => b.side === 'left') ?? [];
+  const rightBranches = step.branches?.filter(b => (b.side ?? 'right') === 'right') ?? [];
 
   return (
-    <div className={s.stepRow} style={{ '--step-color': step.color } as any}>
+    <div
+      className={s.stepRow}
+      style={
+        {
+          '--step-color': step.color,
+        } as React.CSSProperties & { '--step-color': string }
+      }
+    >
       <div className={s.stepInner}>
         <div className={s.dot}>{getIcon()}</div>
+
         <div className={s.card}>
           <div className={s.cardTitle}>{step.title}</div>
           <div className={s.cardMeta}>{step.meta}</div>
+
           <div className={s.tagList}>
-            {step.tags?.map(tag => <span key={tag} className={s.tag}>{tag}</span>)}
+            {step.tags?.map(tag => (
+              <span key={tag} className={s.tag}>
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
       </div>
 
+      {/* ✅ BRANCHES FIXED */}
       {step.branches && (
         <div className={s.branchRow}>
-           {/* Branch SVG logic as per your original file */}
-           <div className={s.branchRightCol}>
+          <div className={s.branchRightCol}>
             {rightBranches.map(branch => (
               <svg key={branch.id} viewBox="0 0 420 140" className={s.branchSvg}>
-                <path d="M 0 0 C 0 50, 30 90, 80 108 C 110 120, 140 126, 160 126" stroke="#d1c8bd" strokeWidth="32" fill="none" strokeLinecap="round" />
-                <rect x="160" y="108" width="120" height="44" rx="12" fill="white" stroke={branch.color} strokeWidth="2.5" />
-                <text x="172" y="126" fontSize="12" fontWeight="800" fill={branch.color}>{branch.title}</text>
+                {/* curved path */}
+                <path
+                  d="M 0 0 C 0 50, 30 90, 80 108 C 110 120, 140 126, 160 126"
+                  stroke="#d1c8bd"
+                  strokeWidth="32"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+
+                {/* branch card */}
+                <rect
+                  x="160"
+                  y="108"
+                  width="150"
+                  height="48"
+                  rx="14"
+                  fill="white"
+                  stroke={branch.color}
+                  strokeWidth="2.5"
+                />
+
+                {/* ✅ Plane icon for MBBS Abroad */}
+                {branch.title === 'MBBS Abroad' && (
+                  <foreignObject x="170" y="112" width="32" height="32">
+                    <Plane size={28} />
+                  </foreignObject>
+                )}
+
+                {/* text shifted right to make space for icon */}
+                <text
+                  x="210"
+                  y="135"
+                  fontSize="13"
+                  fontWeight="700"
+                  fill={branch.color}
+                >
+                  {branch.title}
+                </text>
               </svg>
             ))}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default function LandingPage() {
