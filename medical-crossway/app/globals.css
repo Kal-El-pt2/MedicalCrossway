@@ -1,79 +1,78 @@
-@import "tailwindcss";
+  @import "tailwindcss";
 
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #11111a;
 
-:root {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #11111a;
+    --text-primary: #ffffff;
+    --text-secondary: #c7c7d1;
+    --text-tertiary: #8a8aa3;
 
-  --text-primary: #ffffff;
-  --text-secondary: #c7c7d1;
-  --text-tertiary: #8a8aa3;
+    --accent-primary: #6C63FF;
+  }
 
-  --accent-primary: #6C63FF;
-}
+  body {
+    background:
+      radial-gradient(circle at 50% -20%, rgba(108,99,255,0.25), transparent 50%),
+      radial-gradient(circle at 10% 30%, rgba(255,255,255,0.05), transparent 40%),
+      radial-gradient(circle at 90% 20%, rgba(80,120,255,0.12), transparent 40%),
+      var(--bg-primary);
 
-body {
-  background:
-    radial-gradient(circle at 50% -20%, rgba(108,99,255,0.25), transparent 50%),
-    radial-gradient(circle at 10% 30%, rgba(255,255,255,0.05), transparent 40%),
-    radial-gradient(circle at 90% 20%, rgba(80,120,255,0.12), transparent 40%),
-    var(--bg-primary);
+    color: var(--text-primary);
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+  }
 
-  color: var(--text-primary);
-  font-family: Arial, Helvetica, sans-serif;
-  position: relative;
-}
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("https://www.transparenttextures.com/patterns/noise.png");
+    opacity: 0.03;
+    pointer-events: none;
+  }
+  /* Base button */
+  .phase-btn {
+    border: 1px solid transparent;
+  }
 
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("https://www.transparenttextures.com/patterns/noise.png");
-  opacity: 0.03;
-  pointer-events: none;
-}
-/* Base button */
-.phase-btn {
-  border: 1px solid transparent;
-}
+  /* Active state */
+  .phase-active {
+    transform: scale(1.02);
+  }
 
-/* Active state */
-.phase-active {
-  transform: scale(1.02);
-}
+  /* Phase colors */
+  .phase-all {
+    --phase-bg: var(--text-primary);
+  }
 
-/* Phase colors */
-.phase-all {
-  --phase-bg: var(--text-primary);
-}
+  .phase-premed {
+    --phase-bg: #3b82f6;
+  }
 
-.phase-premed {
-  --phase-bg: #3b82f6;
-}
+  .phase-mcat {
+    --phase-bg: #f59e0b;
+  }
 
-.phase-mcat {
-  --phase-bg: #f59e0b;
-}
+  .phase-medschool {
+    --phase-bg: #8b5cf6;
+  }
 
-.phase-medschool {
-  --phase-bg: #8b5cf6;
-}
+  .phase-residency {
+    --phase-bg: #10b981;
+  }
 
-.phase-residency {
-  --phase-bg: #10b981;
-}
+  .phase-surgery {
+    --phase-bg: #ef4444;
+  }
 
-.phase-surgery {
-  --phase-bg: #ef4444;
-}
+  /* Apply background + glow */
+  .phase-active {
+    background: var(--phase-bg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
 
-/* Apply background + glow */
-.phase-active {
-  background: var(--phase-bg);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-.schoolImg {
-  mix-blend-mode: multiply; /* optional */
-  background: transparent;
-}
+  .schoolImg {
+    mix-blend-mode: multiply; /* optional */
+    background: transparent;
+  }
