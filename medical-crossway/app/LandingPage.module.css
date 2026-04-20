@@ -17,6 +17,56 @@
   color: var(--text-main);
   overflow-x: hidden;
 }
+.introContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.countryGrid {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+  z-index: 10;
+}
+
+.countryCard {
+  background: white;
+  padding: 30px;
+  border-radius: 24px;
+  border: 2px solid var(--path-color);
+  cursor: pointer;
+  text-align: center;
+  width: 220px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.flag {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.countryCard h3 {
+  margin: 0;
+  color: var(--text-main);
+}
+
+.countryCard p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Ensure the hero doesn't jump when the lighthouse moves in */
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 120px; 
+}
 
 /* The Sun Decoration */
 .glowBlob {
@@ -42,14 +92,12 @@
 }
 
 .title {
-  font-size: 52px; /* Adjusted for impact */
+  font-size: 52px;
   font-weight: 800;
-  letter-spacing: 0.05em; /* This gives it that professional serif look */
+  letter-spacing: 0.05em;
   line-height: 1.1;
   display: flex;
-  gap: 0; /* Keeps the words close but distinct */
   text-transform: uppercase;
-  transform: translateY(-60px); 
 }
 /* This adds the space specifically after "MEDICAL" */
 .title span:first-child {
@@ -246,12 +294,10 @@
 }
 .titleRow {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 20px;
 }
-
 .lampHero {
   display: flex;
   align-items: center;
