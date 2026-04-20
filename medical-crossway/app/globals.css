@@ -76,3 +76,8 @@ body::after {
   background: var(--phase-bg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
+
+.schoolImg {
+  mix-blend-mode: multiply; /* optional */
+  background: transparent;
+}
