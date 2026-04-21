@@ -12,7 +12,7 @@ export default function School({ size = 48 }: { size?: number }) {
       }}
     >
       <Image
-        src="/School.png"
+        src="/school.png"
         alt="School Icon"
         width={size}
         height={size}

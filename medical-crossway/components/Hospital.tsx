@@ -12,7 +12,7 @@ export default function Hospital({ size = 90 }: { size?: number }) {
       }}
     >
       <Image
-        src="/Hospital.png"
+        src="/hospital.png"
         alt="Hospital Icon"
         width={size}
         height={size}

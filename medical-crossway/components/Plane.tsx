@@ -12,8 +12,8 @@ export default function Plane({ size = 48 }: { size?: number }) {
       }}
     >
       <Image
-        src="/Plane.png"
-        alt="Plane Icon"
+        src="/plane.png"
+        alt="plane Icon"
         width={size}
         height={size}
         className="planeImg"   
