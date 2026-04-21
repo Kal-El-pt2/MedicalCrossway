@@ -12,7 +12,7 @@ export default function University({ size = 48 }: { size?: number }){
               }}
             >
               <Image
-                src="/University.png"
+                src="/university.png"
                 alt="University Icon"
                 width={size}
                 height={size}
