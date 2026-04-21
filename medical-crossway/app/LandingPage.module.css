@@ -1,396 +1,242 @@
-/* LandingPage.module.css */
+/* ─────────────────────────────────────────────
+   LandingPage.module.css  —  single screen
+───────────────────────────────────────────── */
 
 .main {
-  --bg-color: #f2f6ee; /* Light mint background from image */
-  --path-color: #d1c8bd; /* Tan road color */
-  --text-main: #3d3d3d;
-  --text-secondary: #5f6368;
-  --accent-primary: #1d9e75; /* Medical green */
-  
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48px 24px;
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  overflow-x: hidden;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #ddd5c0;
 }
+
+/* ── Intro ── */
 .introContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
+  width: 100%;
+  height: 100dvh;
+  gap: 24px;
+  padding: 40px 20px;
 }
-
-.countryGrid {
-  display: flex;
-  gap: 20px;
-  margin-top: 40px;
-  z-index: 10;
-}
-
-.countryCard {
-  background: white;
-  padding: 30px;
-  border-radius: 24px;
-  border: 2px solid var(--path-color);
-  cursor: pointer;
-  text-align: center;
-  width: 220px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-}
-
-.flag {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.countryCard h3 {
-  margin: 0;
-  color: var(--text-main);
-}
-
-.countryCard p {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-/* Ensure the hero doesn't jump when the lighthouse moves in */
-.titleRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  height: 120px; 
-}
-
-/* The Sun Decoration */
-.glowBlob {
-  position: absolute;
-  top: 60px;
-  right: 10%;
-  width: 100px;
-  height: 100px;
-  background: #fef3c7;
-  border-radius: 50%;
-  box-shadow: 0 0 40px #fde68a;
-  z-index: 1;
-}
-
-/* ── Hero ─────────────────────────────────────────────────────── */
-
-.hero {
-  text-align: center;
-  max-width: 600px;
-  margin-bottom: 40px;
-  position: relative;
-  z-index: 10;
-}
-
-.title {
-  font-size: 52px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  line-height: 1.1;
-  display: flex;
-  text-transform: uppercase;
-}
-/* This adds the space specifically after "MEDICAL" */
-.title span:first-child {
-  margin-right: 0.3em; /* Adjust this value for more or less space */
-}
-
-.textSlate {
-  color: #5B707B;
-}
-.textRed {
-  color: #E13939;
-}
-.subtitle {
-  font-size: 18px;
-  color: #5B707B;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  margin-top: -55px;
-}
-
-/* ── Speech Bubble ────────────────────────────────────────────── */
 
 .speech {
-  position: relative;
-  background: white;
-  border: 3px solid var(--path-color);
-  border-radius: 24px;
-  padding: 24px 32px;
-  max-width: 450px;
-  text-align: center;
-  margin: 20px auto;
-  box-shadow: 0 8px 0 rgba(0,0,0,0.05);
-  z-index: 10;
-}
-
-.speechText {
-  color: #4a5568;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* ── Roadmap & Path Logic ──────────────────────────────────────── */
-
-.roadmapSection {
-  /* ── Source of truth ── */
-  --road-width: 32px;
-  --left-padding: 150px;
-  --road-left: calc(var(--left-padding) + 18px); /* 150 + half of 68px dot = center of road */
-  --road-right-edge: calc(var(--road-left) + var(--road-width) / 2); /* right edge of road strip */
-
-  width: 100%;
-  max-width: 800px;
-  position: relative;
-  margin: 0 auto;
-  padding-top: 80px;
-  padding-left: var(--left-padding);
-  overflow: visible;
-}
-/* THE ROAD */
-.roadmapSection::before {
-  content: '';
-  position: absolute;
-  left: calc(var(--road-left) - var(--road-width) / 2); /* center minus half width */
-  top: 0;
-  bottom: 0;
-  width: var(--road-width);
-  background: var(--path-color);
+  background: #fff;
+  border: 1.5px solid #d0c9be;
   border-radius: 16px;
-  z-index: 1;
+  padding: 16px 22px;
+  max-width: 340px;
+  position: relative;
 }
-
-.roadmapSection::after {
+.speech::before {
   content: '';
   position: absolute;
-  left: calc(var(--road-left) - 2px);
-  top: 20px;
-  bottom: 20px;
-  width: 4px;
-  border-left: 4px dashed rgba(255,255,255,0.5);
-  z-index: 15;   /* ← raise above branchContainer's z-index: 5 */
-  pointer-events: none;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: #d0c9be;
 }
-.backBtn {
-  position: absolute;
-  left: 0; /* Positions it to the far left of the container */
-  top: 10px;
-  background: #2d3748;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 99px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  z-index: 20;
-  width: 140px; /* Fixed width so it sits neatly to the left of the road */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
+.speechText {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #37474f;
+  margin: 0;
+  text-align: center;
 }
 
-.backBtn:hover {
-  transform: translateX(-5px);
-  background: #1a202c;
-}
-
-.stepRow {
-  position: relative; /* Ensure this is relative */
-  z-index: 10;
-  margin-bottom: 60px; /* Increased margin to give branches room */
-}
-
-.stepInner {
-  display: flex;
-  gap: 30px; /* Space between the icon and the card */
-  align-items: center;
-}
-
-.dot {
-  width: 68px;
-  height: 68px;
-  background: white;
-  border: 4px solid var(--step-color);
-  border-radius: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 6px 0 rgba(0,0,0,0.08);
-  margin-left: calc(-1 * var(--road-width) / 2 - 2px); /* snaps icon onto road center */
-}
-
-.card {
-  max-width: 320px; /* Limits main card width */
-  flex: 0 0 320px;
-  background: white;
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0,0,0,0.03);
-}
-
-.cardTitle {
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--step-color);
-  margin-bottom: 2px;
-}
-
-.cardMeta {
-  font-size: 13px;
-  color: #718096;
-  margin-bottom: 10px;
-}
-
-.tag {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: var(--tag-bg);
-  color: var(--step-color);
-  border: 1px solid var(--tag-border);
-  margin-right: 6px;
-}
-
-/* ── Country Grid ─────────────────────────────────────────────── */
-
-.countryGrid {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+/* ── Map canvas fills the whole viewport ── */
+.mapCanvas {
+  position: fixed;
+  inset: 0;
   width: 100%;
-  max-width: 900px;
-  z-index: 10;
+  max-width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
 }
 
-.backBtn {
-  background: #2d3748;
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 99px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 20px;
+/* SVG stretches edge-to-edge, slicing to fill without letterbox */
+.mapSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.footer {
-  margin-top: 60px;
-  color: #718096;
-  font-weight: 500;
-}
+/* ── All overlays use % of viewport ── */
+
 .titleRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-.lampHero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(5px); 
-  margin-bottom: 0px; 
-}
-
-.lampCenter {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
-}
-
-.clickable {
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.clickable:hover {
-  transform: translateY(-4px);
-}
-.branchWrapper {
   position: absolute;
-  /* 168px (road left) + 32px (road width) = 200px */
-  left: 200px; 
-  top: 85px; /* Positions it just below the stage icon */
+  top: 2vh;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  z-index: 5;
+  gap: 8px;
+  z-index: 20;
+  white-space: nowrap;
+}
+.title {
+  font-size: clamp(13px, 2vw, 22px);
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin: 0;
+  line-height: 1;
+}
+.textSlate { color: #455a64; }
+.textRed   { color: #c0392b; }
+
+.sun {
+  position: absolute;
+  top: 2vh;
+  right: max(2vw, 4px);
+  width: clamp(32px, 5vw, 56px);
+  height: clamp(32px, 5vw, 56px);
+  background: #fdd835;
+  border-radius: 50%;
+  z-index: 10;
 }
 
-/* ── Branch Road ──────────────────────────────────────────────── */
-
-.branchContainer {
-  width: 100%;
-  max-width: 500px;
-  overflow: visible;
-  z-index: 4;
-  margin-left: calc((var(--road-width))/ 2   ); /* starts at right edge of road */
-}
-.branchSvg {
-  width: 85%;
-  height: auto;       /* scales proportionally — no fixed px height */
-  display: block;
-  overflow: visible;
-}
-
-/* Remove the old fixed-position branchCard — card is now inside SVG */
-.branchCard { display: none; }
-
-.stepRow:has(.branchContainer) {
-  margin-bottom: 40px;  /* SVG height is auto, so normal gap is fine */
-}
-
-.branchRow {
+/* Clinics — top band, starting after the title (~22% from left) */
+.clinicsRow {
+  position: absolute;
+  top: 18vh;
+  left: clamp(80px, 18vw, 30vw);
   display: flex;
-  align-items: flex-start;
-  margin-left: calc(-19 * var(--road-width) / 2 - 8px);
-  width: calc(100% + var(--road-width) / 2 + 2px);
-  position: relative;
-  z-index: 4;
-  overflow: visible;
-}
-
-.branchLeft {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: clamp(3px, 0.9vw, 10px);
   align-items: flex-end;
-  overflow: visible;
+  max-width: calc(100vw - clamp(120px, 22vw, 40vw) - 8vw);
+  z-index: 15;
 }
-
-.branchSpacer {
-  /* Exactly the road width — left SVG ends here, right SVG starts here */
-  width: var(--road-width);
-  flex-shrink: 0;
-}
-
-.branchRightCol {
-  flex: 1;
+.clinicItem {
   display: flex;
   flex-direction: column;
-  overflow: visible;
+  align-items: center;
+  gap: 3px;
+}
+.clinicBuilding {
+  width:  clamp(22px, 4vw, 52px);
+  height: clamp(22px, 4vw, 52px);
+  background: var(--clinic-color, #9c27b0);
+  clip-path: polygon(0% 100%, 0% 45%, 50% 0%, 100% 45%, 100% 100%);
+  opacity: 0.92;
+}
+.clinicName {
+  font-size: clamp(7px, 1vw, 11px);
+  font-weight: 500;
+  color: #37474f;
+  text-align: center;
 }
 
-.branchSvg {
-  width: 100%;
-  height: auto;
-  display: block;
-  overflow: visible;
+.highSchool {
+  position: absolute;
+  top: 40vh;
+  left: 0.5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
 }
 
-.stepRow:has(.branchRow) {
-  margin-bottom: 80px;
+.mbbsAbroad {
+  position: absolute;
+  top: 16vh;
+  right: 12vw;        /* was max(0.5vw, 4px) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
+}
+
+.mbbsBuilding {
+  position: absolute;
+  top: 50vh;
+  right: max(0.5vw, 4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
+}
+.residencyAbroad {
+  position: absolute;
+  top: 80vh;        /* was 56vh — below lane 2 where road starts */
+  left: 35vw;       /* was 46vw — slightly left along the curve */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
+}
+.fmgeLabel {
+  position: absolute;
+  top: 64vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
+}
+.fmgeTitle {
+  font-size: clamp(9px, 1.1vw, 13px);
+  font-weight: 700;
+  color: #bf360c;
+  text-align: center;
+  white-space: normal;
+  max-width: 25vw;
+}
+.fmgeSub {
+  font-size: clamp(7px, 0.9vw, 10px);
+  color: #e64a19;
+  text-align: center;
+  white-space: normal;
+  max-width: 25vw;
+}
+
+.pgBuilding {
+  position: absolute;
+  top: 70vh;
+  left: 0.5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
+}
+
+/* ── Shared text styles ── */
+.landmarkTitle {
+  font-size: clamp(10px, 1.2vw, 14px);
+  font-weight: 700;
+  color: #37474f;
+  text-align: center;
+  white-space: nowrap;
+}
+.landmarkSub {
+  font-size: clamp(7px, 0.9vw, 10px);
+  color: #78909c;
+  text-align: center;
+  white-space: nowrap;
+}
+.abroadTitle {
+  font-size: clamp(9px, 1vw, 12px);
+  font-weight: 700;
+  color: #37474f;
+  text-align: center;
+  white-space: normal;
+  max-width: 12vw;
+}
+.abroadSub {
+  font-size: clamp(7px, 0.8vw, 10px);
+  color: #607d8b;
+  text-align: center;
+  white-space: normal;
+  max-width: 12vw;
 }
