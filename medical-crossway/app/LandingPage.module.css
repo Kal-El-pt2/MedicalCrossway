@@ -136,7 +136,8 @@
 .alliedRow {
   position: absolute;
   top: 28vh;
-  left: clamp(70px, 18vw, 220px);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: flex-end;
   gap: clamp(4px, 0.9vw, 12px);
