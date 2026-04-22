@@ -14,14 +14,10 @@ const cinzel = Cinzel({ subsets: ['latin'], weight: ['700', '800'] })
 
 type Phase = 'lamp' | 'speech' | 'roadmap'
 
-const CLINICS = [
-  { title: 'Dentistry', color: '#9c27b0' },
-  { title: 'Nursing', color: '#e91e63' },
-  { title: 'Homeopathy', color: '#4caf50' },
-  { title: 'Chiropractic', color: '#ff9800' },
-  { title: 'Ayurveda', color: '#009688' },
-  { title: 'Veterinary', color: '#2196f3' },
-]
+const pct = (svgX: number, svgY: number) => ({
+  left: `${(svgX / 1200) * 100}%`,
+  top: `${(svgY / 750) * 100}%`,
+})
 
 export default function LandingPage() {
   const [phase, setPhase] = useState<Phase>('lamp')
@@ -43,11 +39,7 @@ export default function LandingPage() {
               <Lighthouse size={180} />
             </motion.div>
             {phase === 'speech' && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className={s.speech}
-              >
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className={s.speech}>
                 <p className={s.speechText}>
                   {"Hi! I'm here to "}<b>shine a light</b>{" on your path."}<br />
                   {"Let's look at your journey to becoming a doctor."}
@@ -61,154 +53,147 @@ export default function LandingPage() {
         {phase === 'roadmap' && (
           <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={s.mapCanvas}>
 
-            {/* ── SVG: full-screen background with roads ── */}
-            <svg className={s.mapSvg} viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
-              <defs>
-                <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#c4e8f5" />
-                  <stop offset="45%" stopColor="#d8eef5" />
-                  <stop offset="100%" stopColor="#ddd5c0" />
-                </linearGradient>
-              </defs>
+            <svg className={s.mapSvg} viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
 
-              {/* Sky background */}
-              <rect width="1000" height="600" fill="url(#skyGrad)" />
+              {/* SKY */}
+              <rect width="1200" height="330" fill="#87CEEB" />
+              <ellipse cx="190" cy="75" rx="62" ry="26" fill="white" opacity="0.85" />
+              <ellipse cx="235" cy="70" rx="46" ry="22" fill="white" opacity="0.85" />
+              <ellipse cx="150" cy="73" rx="42" ry="20" fill="white" opacity="0.85" />
+              <ellipse cx="680" cy="52" rx="58" ry="23" fill="white" opacity="0.8" />
+              <ellipse cx="724" cy="47" rx="42" ry="19" fill="white" opacity="0.8" />
+              <ellipse cx="638" cy="50" rx="40" ry="18" fill="white" opacity="0.8" />
+              <circle cx="1140" cy="58" r="38" fill="#FDD835" />
 
-              {/* ── Ground colour bands ── */}
-              {/* Between lane 1 and lane 2 */}
-              <rect x="0" y="265" width="1000" height="124" fill="#7cb752" />
-              {/* Below lane 2 */}
-              <rect x="0" y="430" width="1000" height="170" fill="#7cb752" />
+              {/* UPPER GRASS */}
+              <rect y="310" width="1200" height="50" fill="#5D8A3C" />
 
-              {/* ── Grass strips ── */}
-              <ellipse cx="500" cy="236" rx="520" ry="18" fill="#a5c97a" opacity="0.55" />
-              <ellipse cx="500" cy="430" rx="520" ry="18" fill="#a5c97a" opacity="0.48" />
-              <ellipse cx="500" cy="598" rx="520" ry="14" fill="#8fbb5e" opacity="0.32" />
+         
+              {/* ROAD 1 */}
+              <rect x="0" y="360" width="1034" height="60" fill="#B5A48A" />
+              <line x1="0" y1="390" x2="1034" y2="390" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="18 12" />
 
-              {/* ══════════════════════════════
-                  LANE 1 — left→right  y≈255
-              ══════════════════════════════ */}
-              <path d="M0,258 Q500,250 1000,258" stroke="#b4a98f" strokeWidth="46" fill="none" />
-              <path d="M0,258 Q500,250 1000,258" stroke="#c5b99a" strokeWidth="40" fill="none" />
-              <path d="M0,258 Q500,250 1000,258" stroke="#d4c9b0" strokeWidth="3" fill="none" strokeDasharray="28 18" />
+              {/* GRASS FILL right of Road 1 */}
+              <rect x="1034" y="360" width="166" height="60" fill="#6B9E48" />
 
-              {/* Clinic branch — exits lane1 at x≈280, sweeps up-left */}
-              <path d="M280,255 Q265,215 255,175"
-                stroke="#b4a98f" strokeWidth="30" fill="none" />
-              <path d="M280,255 Q265,215 255,175"
-                stroke="#c5b99a" strokeWidth="24" fill="none" />
-              <path d="M280,255 Q265,215 255,175"
-                stroke="#d4c9b0" strokeWidth="3" fill="none" strokeDasharray="18 12" />
-              {/* MBBS Abroad dashed fork — upper right from lane 1 */}
-              <path d="M800,256 Q850,210 890,165"
-                stroke="#b4a98f" strokeWidth="18" fill="none" strokeDasharray="15 9" />
+              {/* MIDDLE GRASS */}
+              <rect y="420" width="1200" height="65" fill="#6B9E48" />
+              <rect x="406" y="440" width="7" height="34" fill="#5C4033" /><ellipse cx="409" cy="437" rx="17" ry="19" fill="#4CAF50" />
+              <rect x="866" y="444" width="7" height="30" fill="#5C4033" /><ellipse cx="869" cy="441" rx="17" ry="19" fill="#56A042" />
 
-              {/* ══════════════════════════════
-                  RIGHT HAIRPIN  y255→y410
-              ══════════════════════════════ */}
-              <path d="M1000,258 Q1030,335 1000,412"
-                stroke="#b4a98f" strokeWidth="46" fill="none" />
-              <path d="M1000,258 Q1030,335 1000,412"
-                stroke="#c5b99a" strokeWidth="40" fill="none" />
+             
+              {/* ROAD 2 */}
+              <rect x="0" y="485" width="1034" height="60" fill="#B5A48A" />
+              <line x1="0" y1="515" x2="1034" y2="515" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="18 12" />
 
-              {/* ══════════════════════════════
-                  LANE 2 — right→left  y≈412
-              ══════════════════════════════ */}
-              <path d="M1000,412 Q500,404 0,412" stroke="#b4a98f" strokeWidth="46" fill="none" />
-              <path d="M1000,412 Q500,404 0,412" stroke="#c5b99a" strokeWidth="40" fill="none" />
-              <path d="M1000,412 Q500,404 0,412" stroke="#d4c9b0" strokeWidth="3" fill="none" strokeDasharray="28 18" />
+              {/* GRASS FILL right of Road 2 */}
+              <rect x="1034" y="485" width="166" height="60" fill="#6B9E48" />
 
-              {/* Residency Abroad dashed fork — upper right from lane 2 */}
-              <path d="M500,412 Q500,455 450,470 Q400,485 385,530"
-                stroke="#b4a98f" strokeWidth="18" fill="none" strokeDasharray="15 9" />
+              {/* LOWER GRASS */}
+              <rect y="545" width="1200" height="205" fill="#5D8A3C" />
+              <rect x="366" y="575" width="7" height="36" fill="#5C4033" /><ellipse cx="369" cy="572" rx="17" ry="20" fill="#4CAF50" />
+              <rect x="946" y="585" width="7" height="34" fill="#5C4033" /><ellipse cx="949" cy="582" rx="17" ry="20" fill="#56A042" />
+              <rect x="1120" y="595" width="7" height="30" fill="#5C4033" /><ellipse cx="1123" cy="592" rx="16" ry="18" fill="#4CAF50" />
 
-              {/* FMGE marker dot */}
-              <circle cx="500" cy="408" r="9" fill="#263238" />
-              <circle cx="500" cy="408" r="4.5" fill="#80cbc4" />
+              {/* CONNECTOR A — between Road 1 and Road 2, right side */}
+              <rect x="986" y="420" width="48" height="65" fill="#A8977E" />
+              <line x1="1010" y1="422" x2="1010" y2="483" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
 
-              {/* ── Trees between lanes ── */}
-              <circle cx="360" cy="342" r="17" fill="#6ab04c" />
-              <circle cx="350" cy="339" r="12" fill="#7cb752" />
-              <rect x="358" y="354" width="4" height="14" fill="#795548" />
+              {/* CONNECTOR B — between Road 1 and Road 2, centre */}
+              <rect x="686" y="420" width="48" height="65" fill="#A8977E" />
+              <line x1="710" y1="422" x2="710" y2="483" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
 
-              <circle cx="520" cy="346" r="14" fill="#6ab04c" />
-              <rect x="518" y="356" width="4" height="12" fill="#795548" />
+              {/* CONNECTOR C — from Road 2 down to bottom */}
+              <rect x="586" y="545" width="48" height="105" fill="#A8977E" />
+              <line x1="610" y1="547" x2="610" y2="645" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
 
-              {/* ── Trees below lane 2 ── */}
-              <circle cx="200" cy="510" r="17" fill="#6ab04c" />
-              <rect x="198" y="522" width="4" height="14" fill="#795548" />
+              {/* CONNECTOR D — from sky down to Road 1 */}
+              <rect x="586" y="295" width="48" height="65" fill="#A8977E" />
+              <line x1="610" y1="300" x2="610" y2="355" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
 
-              <circle cx="600" cy="506" r="14" fill="#6ab04c" />
-              <rect x="598" y="516" width="4" height="12" fill="#795548" />
             </svg>
 
-            {/* ── Title + lighthouse ── */}
-            <div className={s.titleRow}>
-              <motion.div layoutId="lighthouse" transition={{ type: 'spring', stiffness: 70 }}>
-                <Lighthouse size={58} />
-              </motion.div>
-              <h1 className={`${s.title} ${cinzel.className}`}>
-                <span className={s.textSlate}>MEDICAL </span>
-                <span className={s.textRed}>CROSS</span>
-                <span className={s.textSlate}>WAY</span>
-              </h1>
-            </div>
+            {/* ── OVERLAY NODES ── */}
+            <div className={s.nodesLayer}>
 
-            {/* ── Sun ── */}
-            <div className={s.sun} />
+              {/* TITLE + LIGHTHOUSE */}
+              <div className={s.titleRow}>
+                <motion.div layoutId="lighthouse" transition={{ type: 'spring', stiffness: 70 }}>
+                  <Lighthouse size={58} />
+                </motion.div>
+                <h1 className={`${s.title} ${cinzel.className}`}>
+                  <span className={s.textSlate}>MEDICAL </span>
+                  <span className={s.textRed}>CROSS</span>
+                  <span className={s.textSlate}>WAY</span>
+                </h1>
+              </div>
 
-            {/* ── CLINICS — top, right of title ── */}
-            <div className={s.clinicsRow}>
-              {CLINICS.map(c => (
-                <div key={c.title} className={s.clinicItem}
-                  style={{ '--clinic-color': c.color } as React.CSSProperties}>
-                  <div className={s.clinicBuilding} />
-                  <span className={s.clinicName}>{c.title}</span>
+              {/* ALLIED HEALTH */}
+              <div className={s.alliedRow}>
+                {[
+                  { label: 'Dentistry', color: '#9C27B0' },
+                  { label: 'Nursing', color: '#E91E63' },
+                  { label: 'Homeopathy', color: '#4CAF50' },
+                  { label: 'Chiropractic', color: '#FF9800' },
+                  { label: 'Ayurveda', color: '#009688' },
+                  { label: 'Veterinary', color: '#2196F3' },
+                ].map(({ label, color }) => (
+                  <div key={label} className={s.alliedItem}>
+                    <div className={s.alliedHouse} style={{ '--house-color': color } as React.CSSProperties} />
+                    <span className={s.alliedLabel}>{label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* MBBS ABROAD — sky, above connector D */}
+              <div className={s.node} style={pct(950, 360)}>
+                <div style={{ transform: 'scaleX(-1)' }}>
+                  <Plane size={110} />
                 </div>
-              ))}
-            </div>
+                <span className={s.nodeTitle}>MBBS Abroad</span>
+                <span className={s.nodeSub}>Russia · Philippines · more</span>
+              </div>
 
-            {/* ── HIGH SCHOOL — left, lane 1 ── */}
-            <div className={s.highSchool}>
-              <School size={140} />
-              <span className={s.landmarkTitle}>High school</span>
-              <span className={s.landmarkSub}>why medicine · PCB</span>
-            </div>
+              {/* HIGH SCHOOL — left, Road 1 */}
+              <div className={s.node} style={pct(266, 390)}>
+                <School size={100} />
+                <span className={s.nodeTitle}>High School</span>
+                <span className={s.nodeSub}>Any medicine · PCB</span>
+              </div>
 
-            {/* ── MBBS ABROAD — upper right ── */}
-            <div className={s.mbbsAbroad}>
-              <span className={s.abroadTitle}>MBBS abroad</span>
-              <span className={s.abroadSub}>Russia · Philippines · more</span>
-              <Plane size={120} />
-            </div>
+              {/* MBBS INDIA — middle grass, between connectors B and A */}
+              <div className={s.node} style={pct(818, 462)}>
+                <University size={90} />
+                <span className={s.nodeTitle}>MBBS</span>
+                <span className={s.nodeSub}>Medical college · NEET UG</span>
+              </div>
 
-            {/* ── MBBS HOSPITAL — right, in hairpin ── */}
-            <div className={s.mbbsBuilding}>
-              <University size={120} />
-              <span className={s.landmarkTitle} style={{ color: '#1a237e' }}>MBBS</span>
-              <span className={s.landmarkSub}>Medical college · NEET UG</span>
-            </div>
+              {/* FMGE — middle grass, right of connector A */}
+              <div className={s.node} style={pct(1100, 452)}>
+                <div className={s.fmgeBox}>
+                  <div className={s.fmgeStripe} />
+                  <div className={s.fmgeTextWrap}>
+                    <span className={s.fmgeTitle}>FMGE · Back to India</span>
+                    <span className={s.fmgeSub}>Re-enter Indian medical system</span>
+                  </div>
+                </div>
+              </div>
 
-            {/* ── RESIDENCY ABROAD — right, lane 2 branch ── */}
-            <div className={s.residencyAbroad}>
-              <span className={s.abroadTitle} style={{ color: '#1b5e20' }}>Residency abroad</span>
-              <span className={s.abroadSub} style={{ color: '#388e3c' }}>USMLE · PLAB · AMC · more</span>
-              <Plane size={120} />
-            </div>
+              {/* PG / RESIDENCY HOSPITAL — left, Road 2 */}
+              <div className={s.node} style={pct(266, 515)}>
+                <Hospital size={100} />
+                <span className={s.nodeTitle}>PG / Residency</span>
+                <span className={s.nodeSub}>MD · MS · NEET PG</span>
+              </div>
 
-            {/* ── FMGE — mid lane 2 ── */}
-            <div className={s.fmgeLabel}>
-              <span className={s.fmgeTitle}>FMGE · Back to India</span>
-              <span className={s.fmgeSub}>Re-enter Indian medical system</span>
-            </div>
+              {/* RESIDENCY ABROAD — bottom of connector C */}
+              <div className={s.node} style={pct(610, 680)}>
+                <Plane size={100} />
+                <span className={s.nodeTitle}>Residency Abroad</span>
+                <span className={s.nodeSub}>USMLE · PLAB · AMC · more</span>
+              </div>
 
-            {/* ── PG HOSPITAL — left, lane 2 ── */}
-            <div className={s.pgBuilding}>
-              <Hospital size={120} />
-              <span className={s.landmarkTitle} style={{ color: '#4f46e5' }}>PG / Residency</span>
-              <span className={s.landmarkSub}>MD / MS · NEET PG</span>
             </div>
-
           </motion.div>
         )}
       </AnimatePresence>
