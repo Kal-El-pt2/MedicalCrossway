@@ -1,16 +1,175 @@
 /* ─────────────────────────────────────────────
-   LandingPage.module.css  —  single screen
+   LandingPage.module.css
 ───────────────────────────────────────────── */
 
 .main {
   width: 100vw;
-  max-width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background: #ddd5c0;
+  background: #87CEEB;
 }
 
-/* ── Intro ── */
+.mapCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.mapSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlay exactly covers the SVG — both are 100%×100% of mapCanvas */
+.nodesLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── Generic landmark node ──
+   left/top are set as % of 1200×750 viewBox via inline style.
+   translate(-50%,-50%) centres the node on that point. */
+.node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  gap: 3px;
+}
+
+.nodeTitle {
+  font-size: clamp(10px, 1.1vw, 13px);
+  font-weight: 700;
+  color: #1a1a1a;
+  background: rgba(255,255,255,0.9);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.nodeSub {
+  font-size: clamp(8px, 0.85vw, 10px);
+  color: #444;
+  background: rgba(255,255,255,0.75);
+  padding: 1px 6px;
+  border-radius: 3px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── FMGE toll box ── */
+.fmgeBox {
+  display: flex;
+  align-items: stretch;
+  background: white;
+  border: 2.5px solid #8B7355;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.fmgeStripe {
+  width: 20px;
+  min-height: 50px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #FFB300 0px, #FFB300 6px,
+    #333    6px, #333    12px
+  );
+  flex-shrink: 0;
+}
+
+.fmgeTextWrap {
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fmgeTitle {
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 700;
+  color: #BF360C;
+  white-space: nowrap;
+}
+
+.fmgeSub {
+  font-size: clamp(8px, 0.85vw, 10px);
+  color: #E64A19;
+  white-space: nowrap;
+}
+
+/* ── Title row ── */
+.titleRow {
+  position: absolute;
+  top: 2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 20;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.title {
+  font-size: clamp(14px, 2.2vw, 24px);
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin: 0;
+  line-height: 1;
+}
+
+.textSlate { color: #37474F; }
+.textRed   { color: #C0392B; }
+
+/* ── Allied health row ── */
+.alliedRow {
+  position: absolute;
+  top: 28vh;
+  left: clamp(70px, 18vw, 220px);
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(4px, 0.9vw, 12px);
+  pointer-events: auto;
+}
+
+.alliedItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.alliedHouse {
+  width: clamp(22px, 3.8vw, 48px);
+  height: clamp(22px, 3.8vw, 48px);
+  background: var(--house-color, #9C27B0);
+  clip-path: polygon(0% 100%, 0% 45%, 50% 0%, 100% 45%, 100% 100%);
+  opacity: 0.92;
+}
+
+.alliedLabel {
+  font-size: clamp(8px, 0.85vw, 11px);
+  font-weight: 500;
+  color: #37474F;
+  background: rgba(255,255,255,0.78);
+  padding: 1px 4px;
+  border-radius: 3px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Intro phase ── */
 .introContainer {
   display: flex;
   flex-direction: column;
@@ -20,6 +179,7 @@
   height: 100dvh;
   gap: 24px;
   padding: 40px 20px;
+  background: #87CEEB;
 }
 
 .speech {
@@ -30,6 +190,7 @@
   max-width: 340px;
   position: relative;
 }
+
 .speech::before {
   content: '';
   position: absolute;
@@ -39,204 +200,11 @@
   border: 6px solid transparent;
   border-bottom-color: #d0c9be;
 }
+
 .speechText {
   font-size: 15px;
   line-height: 1.6;
   color: #37474f;
   margin: 0;
   text-align: center;
-}
-
-/* ── Map canvas fills the whole viewport ── */
-.mapCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  max-width: 100vw;
-  height: 100dvh;
-  overflow: hidden;
-}
-
-/* SVG stretches edge-to-edge, slicing to fill without letterbox */
-.mapSvg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* ── All overlays use % of viewport ── */
-
-.titleRow {
-  position: absolute;
-  top: 2vh;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 20;
-  white-space: nowrap;
-}
-.title {
-  font-size: clamp(13px, 2vw, 22px);
-  font-weight: 800;
-  letter-spacing: 1px;
-  margin: 0;
-  line-height: 1;
-}
-.textSlate { color: #455a64; }
-.textRed   { color: #c0392b; }
-
-.sun {
-  position: absolute;
-  top: 2vh;
-  right: max(2vw, 4px);
-  width: clamp(32px, 5vw, 56px);
-  height: clamp(32px, 5vw, 56px);
-  background: #fdd835;
-  border-radius: 50%;
-  z-index: 10;
-}
-
-/* Clinics — top band, starting after the title (~22% from left) */
-.clinicsRow {
-  position: absolute;
-  top: 18vh;
-  left: clamp(80px, 18vw, 30vw);
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(3px, 0.9vw, 10px);
-  align-items: flex-end;
-  max-width: calc(100vw - clamp(120px, 22vw, 40vw) - 8vw);
-  z-index: 15;
-}
-.clinicItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.clinicBuilding {
-  width:  clamp(22px, 4vw, 52px);
-  height: clamp(22px, 4vw, 52px);
-  background: var(--clinic-color, #9c27b0);
-  clip-path: polygon(0% 100%, 0% 45%, 50% 0%, 100% 45%, 100% 100%);
-  opacity: 0.92;
-}
-.clinicName {
-  font-size: clamp(7px, 1vw, 11px);
-  font-weight: 500;
-  color: #37474f;
-  text-align: center;
-}
-
-.highSchool {
-  position: absolute;
-  top: 40vh;
-  left: 0.5vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  z-index: 10;
-}
-
-.mbbsAbroad {
-  position: absolute;
-  top: 16vh;
-  right: 12vw;        /* was max(0.5vw, 4px) */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  z-index: 10;
-}
-
-.mbbsBuilding {
-  position: absolute;
-  top: 50vh;
-  right: max(0.5vw, 4px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  z-index: 10;
-}
-.residencyAbroad {
-  position: absolute;
-  top: 80vh;        /* was 56vh — below lane 2 where road starts */
-  left: 35vw;       /* was 46vw — slightly left along the curve */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  z-index: 10;
-}
-.fmgeLabel {
-  position: absolute;
-  top: 64vh;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  z-index: 10;
-}
-.fmgeTitle {
-  font-size: clamp(9px, 1.1vw, 13px);
-  font-weight: 700;
-  color: #bf360c;
-  text-align: center;
-  white-space: normal;
-  max-width: 25vw;
-}
-.fmgeSub {
-  font-size: clamp(7px, 0.9vw, 10px);
-  color: #e64a19;
-  text-align: center;
-  white-space: normal;
-  max-width: 25vw;
-}
-
-.pgBuilding {
-  position: absolute;
-  top: 70vh;
-  left: 0.5vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  z-index: 10;
-}
-
-/* ── Shared text styles ── */
-.landmarkTitle {
-  font-size: clamp(10px, 1.2vw, 14px);
-  font-weight: 700;
-  color: #37474f;
-  text-align: center;
-  white-space: nowrap;
-}
-.landmarkSub {
-  font-size: clamp(7px, 0.9vw, 10px);
-  color: #78909c;
-  text-align: center;
-  white-space: nowrap;
-}
-.abroadTitle {
-  font-size: clamp(9px, 1vw, 12px);
-  font-weight: 700;
-  color: #37474f;
-  text-align: center;
-  white-space: normal;
-  max-width: 12vw;
-}
-.abroadSub {
-  font-size: clamp(7px, 0.8vw, 10px);
-  color: #607d8b;
-  text-align: center;
-  white-space: normal;
-  max-width: 12vw;
 }
