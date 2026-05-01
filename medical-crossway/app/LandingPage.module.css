@@ -1,211 +1,122 @@
-/* ─────────────────────────────────────────────
-   LandingPage.module.css
-───────────────────────────────────────────── */
-
 .main {
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background: #87CEEB;
+  /* Multi-layered background: Sky -> Lighting Gradient -> Solid Green */
+  background: 
+    /* Changed 12.1% to 12% to make a perfectly sharp horizon */
+    linear-gradient(to bottom, #87CEEB 0%, #87CEEB 12%, transparent 12%),
+    radial-gradient(circle at 50% 40%, #8ecb6d 0%, #7eb55d 70%, #6a9a4d 100%);
+  position: relative;
 }
-
-.mapCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100dvh;
-  overflow: hidden;
-}
-
-.mapSvg {
+.main::before {
+  content: "";
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Overlay exactly covers the SVG — both are 100%×100% of mapCanvas */
-.nodesLayer {
-  position: absolute;
-  inset: 0;
+  opacity: 0.15;
   pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* ── Generic landmark node ──
-   left/top are set as % of 1200×750 viewBox via inline style.
-   translate(-50%,-50%) centres the node on that point. */
-.node {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: auto;
-  transform: translate(-50%, -50%);
-  gap: 3px;
-}
-
-.nodeTitle {
-  font-size: clamp(10px, 1.1vw, 13px);
-  font-weight: 700;
-  color: #1a1a1a;
-  background: rgba(255,255,255,0.9);
-  padding: 2px 8px;
-  border-radius: 4px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.nodeSub {
-  font-size: clamp(8px, 0.85vw, 10px);
-  color: #444;
-  background: rgba(255,255,255,0.75);
-  padding: 1px 6px;
-  border-radius: 3px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* ── FMGE toll box ── */
-.fmgeBox {
-  display: flex;
-  align-items: stretch;
-  background: white;
-  border: 2.5px solid #8B7355;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-
-.fmgeStripe {
-  width: 20px;
-  min-height: 50px;
-  background: repeating-linear-gradient(
-    -45deg,
-    #FFB300 0px, #FFB300 6px,
-    #333    6px, #333    12px
-  );
-  flex-shrink: 0;
-}
-
-.fmgeTextWrap {
-  padding: 6px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.fmgeTitle {
-  font-size: clamp(10px, 1vw, 12px);
-  font-weight: 700;
-  color: #BF360C;
-  white-space: nowrap;
-}
-
-.fmgeSub {
-  font-size: clamp(8px, 0.85vw, 10px);
-  color: #E64A19;
-  white-space: nowrap;
-}
-
-/* ── Title row ── */
-.titleRow {
-  position: absolute;
-  top: 2vh;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 20;
-  white-space: nowrap;
-  pointer-events: auto;
-}
-
-.title {
-  font-size: clamp(14px, 2.2vw, 24px);
-  font-weight: 800;
-  letter-spacing: 1px;
-  margin: 0;
-  line-height: 1;
-}
-
-.textSlate { color: #37474F; }
-.textRed   { color: #C0392B; }
-
-/* ── Allied health row ── */
-.alliedRow {
-  position: absolute;
-  top: 28vh;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: flex-end;
-  gap: clamp(4px, 0.9vw, 12px);
-  pointer-events: auto;
-}
-
-.alliedItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.alliedHouse {
-  width: clamp(22px, 3.8vw, 48px);
-  height: clamp(22px, 3.8vw, 48px);
-  background: var(--house-color, #9C27B0);
-  clip-path: polygon(0% 100%, 0% 45%, 50% 0%, 100% 45%, 100% 100%);
-  opacity: 0.92;
-}
-
-.alliedLabel {
-  font-size: clamp(8px, 0.85vw, 11px);
-  font-weight: 500;
-  color: #37474F;
-  background: rgba(255,255,255,0.78);
-  padding: 1px 4px;
-  border-radius: 3px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* ── Intro phase ── */
 .introContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100dvh;
-  gap: 24px;
-  padding: 40px 20px;
-  background: #87CEEB;
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; background: #87CEEB;
 }
 
 .speech {
-  background: #fff;
-  border: 1.5px solid #d0c9be;
-  border-radius: 16px;
-  padding: 16px 22px;
-  max-width: 340px;
-  position: relative;
-}
-
-.speech::before {
-  content: '';
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-bottom-color: #d0c9be;
+  position: absolute; top: calc(50% + 120px); left: 50%;
+  background: #fff; padding: 12px 20px; border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd;
+  z-index: 101;
 }
 
 .speechText {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #37474f;
-  margin: 0;
-  text-align: center;
+  font-size: clamp(14px, 3.5vw, 16px);
+  color: #37474f; margin: 0; text-align: center;
+}
+
+.titleRow {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 12px; z-index: 200; white-space: nowrap;
+}
+
+.title {
+  font-size: clamp(16px, 2.5vw, 28px); font-weight: 800; letter-spacing: 1px;
+}
+
+.textSlate { color: #2c3e50; }
+.textRed   { color: #c0392b; }
+
+.mapWrapper {
+  width: 100%; height: 100%; display: flex; align-items: flex-start; 
+  padding-top: 60px; justify-content: center;
+}
+
+.mapCanvas {
+  position: relative; 
+  width: 100%; 
+  max-width: 1200px; 
+  aspect-ratio: 1200 / 750;
+  background: transparent;
+  /* Give the whole map a slight tilt feel */
+  perspective: 1000px;
+}
+
+.mapSvg {
+  width: 100%; height: 100%; display: block; overflow: visible;
+}
+
+.nodesLayer { position: absolute; inset: 0; pointer-events: none; }
+
+.node {
+  position: absolute; 
+  display: flex; 
+  flex-direction: row; 
+  align-items: center; 
+  /* Set gap to 0 so they touch */
+  gap: 0;           
+  pointer-events: auto; 
+  /* Adjusted X-translation to -15% to keep the icon better centered on the road */
+  transform: translate(-15%, -50%); 
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+}
+.nodeTitle {
+  color: #2c3e50;       /* ADD THIS LINE: Explicit dark color */
+  font-size: clamp(9px, 1.1vw, 13px); 
+  font-weight: 800;
+  background: white; 
+  padding: 4px 10px;   
+  border-radius: 4px;
+  margin-top: 0;        
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  white-space: nowrap;
+  margin-left: -2px; 
+}
+.decoration {
+  opacity: 0.4;
+  fill: #5a8a41;
+}
+.alliedCluster {
+  position: absolute; display: flex; flex-direction: column;
+  align-items: center; gap: 10px; transform: translate(-50%, -50%);
+}
+.houseRow { display: flex; gap: 15px; }
+.alliedItem { display: flex; flex-direction: column; align-items: center; }
+.alliedHouse {
+  width: 25px; height: 25px; background: #9b59b6;
+  clip-path: polygon(50% 0%, 0% 40%, 0% 100%, 100% 100%, 100% 40%);
+}
+.alliedLabel { font-size: 10px; font-weight: bold; color: #2c3e50; margin-top: 2px; }
+
+.fmgeBox {
+  display: flex; background: white; border: 1.5px solid #333; border-radius: 4px; overflow: hidden;
+}
+.fmgeStripe {
+  width: 10px; background: repeating-linear-gradient(-45deg, #f1c40f, #f1c40f 5px, #333 5px, #333 10px);
+}
+.fmgeTextWrap { padding: 3px 8px; font-size: 9px; font-weight: 900; color: #c0392b; }
+
+@media (max-width: 640px) {
+  .mapCanvas { width: 180%; left: -40%; }
 }

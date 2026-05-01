@@ -14,13 +14,21 @@ const cinzel = Cinzel({ subsets: ['latin'], weight: ['700', '800'] })
 
 type Phase = 'lamp' | 'speech' | 'roadmap'
 
-const pct = (svgX: number, svgY: number) => ({
-  left: `${(svgX / 1200) * 100}%`,
-  top: `${(svgY / 750) * 100}%`,
+const pct = (x: number, y: number) => ({
+  left: `${(x / 1200) * 100}%`,
+  top: `${(y / 750) * 100}%`,
 })
 
 export default function LandingPage() {
   const [phase, setPhase] = useState<Phase>('lamp')
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   useEffect(() => {
     const t1 = setTimeout(() => setPhase('speech'), 800)
@@ -28,175 +36,152 @@ export default function LandingPage() {
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
+  const sz = isMobile ? 0.5 : 0.85
+
+  // ── ROAD PATH DEFINITIONS ──
+  
+  // 1. Top Section: School (x:60) -> Curve -> MBBS Abroad (x:900)
+  const topRoad = "M 60 130 C 60 400, 250 400, 400 400 L 1010 400";
+  
+  // 2. Allied Cluster Branch: Starts exactly at center of top road (y:400)
+  const alliedRoad = "M 330 400 L 330 485";
+
+  // 3. The Drops: University and FMGE roads
+  const universityDrop = "M 730 400 L 730 620";
+  const fmgeDrop = "M 1020 400 L 1020 620";
+  
+  // 4. The Combined Horizontal Road
+  const mergerLine = "M 1020 620 L 600 620";
+  
+  // 5. Final Branch A: To PG India (Hospital)
+  const branchIndia = "M 600 620 L 100 620";
+  
+  // 6. Final Branch B: To PG Abroad (Airport 2)
+  const branchAbroad = "M 600 620 Q 600 705 450 725 L 100 725";
+
   return (
     <main className={s.main}>
       <AnimatePresence mode="wait">
-
+        
         {/* ── INTRO PHASE ── */}
         {(phase === 'lamp' || phase === 'speech') && (
-          <motion.div key="intro" className={s.introContainer} exit={{ opacity: 0, y: -20 }}>
-            <motion.div layoutId="lighthouse">
-              <Lighthouse size={180} />
+          <motion.div key="intro" className={s.introContainer} exit={{ opacity: 0 }}>
+            <motion.div layoutId="lighthouse-icon">
+              <Lighthouse size={isMobile ? 120 : 180} />
             </motion.div>
-            {phase === 'speech' && (
-              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className={s.speech}>
-                <p className={s.speechText}>
-                  {"Hi! I'm here to "}<b>shine a light</b>{" on your path."}<br />
-                  {"Let's look at your journey to becoming a doctor."}
-                </p>
-              </motion.div>
-            )}
+            <AnimatePresence>
+              {phase === 'speech' && (
+                <motion.div initial={{ opacity: 0, y: 20, x: '-50%' }} animate={{ opacity: 1, y: 0, x: '-50%' }} className={s.speech}>
+                  <p className={s.speechText}>{"Hi! I'm here to "}<b>shine a light</b>{" on your path."}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
 
         {/* ── ROADMAP PHASE ── */}
         {phase === 'roadmap' && (
-          <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={s.mapCanvas}>
+          <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={s.mapWrapper}>
+            
+            <div className={s.titleRow}>
+              <motion.div layoutId="lighthouse-icon">
+                <Lighthouse size={isMobile ? 35 : 55} />
+              </motion.div>
+              <h1 className={`${s.title} ${cinzel.className}`}>
+                <span className={s.textSlate}>MEDICAL </span>
+                <span className={s.textRed}>CROSS</span>
+                <span className={s.textSlate}>WAY</span>
+              </h1>
+            </div>
 
-            <svg className={s.mapSvg} viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <div className={s.mapCanvas}>
+              <svg className={s.mapSvg} viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice">
+                
+                {/* ── SOLID ROADS (BROWN) ── */}
+                <g stroke="#B5A48A" strokeWidth="60" fill="none" strokeLinecap="round">
+                  <path d={topRoad} />
+                  <path d={alliedRoad} />
+                  <path d={universityDrop} strokeLinecap="butt" /> {/* Butt prevents overlap bulge */}
+                  <path d={fmgeDrop} />
+                  <path d={mergerLine} strokeLinecap="butt" />
+                  <path d={branchIndia} />
+                  <path d={branchAbroad} />
+                </g>
 
-              {/* SKY */}
-              <rect width="1200" height="330" fill="#87CEEB" />
-              <ellipse cx="190" cy="75" rx="62" ry="26" fill="white" opacity="0.85" />
-              <ellipse cx="235" cy="70" rx="46" ry="22" fill="white" opacity="0.85" />
-              <ellipse cx="150" cy="73" rx="42" ry="20" fill="white" opacity="0.85" />
-              <ellipse cx="680" cy="52" rx="58" ry="23" fill="white" opacity="0.8" />
-              <ellipse cx="724" cy="47" rx="42" ry="19" fill="white" opacity="0.8" />
-              <ellipse cx="638" cy="50" rx="40" ry="18" fill="white" opacity="0.8" />
-              <circle cx="1140" cy="58" r="38" fill="#FDD835" />
+                {/* ── DASHED MARKINGS (CENTER LINES) ── */}
+                <g fill="none" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="15 10">
+                   <path d={topRoad} />
+                   <path d={alliedRoad} />
+                   <path d={universityDrop} />
+                   <path d={fmgeDrop} />
+                   <path d={mergerLine} />
+                   <path d={branchIndia} />
+                   <path d={branchAbroad} />
+                </g>
+              </svg>
 
-              {/* UPPER GRASS */}
-              <rect y="310" width="1200" height="50" fill="#5D8A3C" />
+              <div className={s.nodesLayer}>
+                {/* School */}
+                <Node pos={pct(5, 55)}>
+                  <School size={150 * sz} />
+                  <span className={s.nodeTitle}>High School</span>
+                </Node>
 
-         
-              {/* ROAD 1 */}
-              <rect x="0" y="360" width="1034" height="60" fill="#B5A48A" />
-              <line x1="0" y1="390" x2="1034" y2="390" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="18 12" />
-
-              {/* GRASS FILL right of Road 1 */}
-              <rect x="1034" y="360" width="166" height="60" fill="#6B9E48" />
-
-              {/* MIDDLE GRASS */}
-              <rect y="420" width="1200" height="65" fill="#6B9E48" />
-              <rect x="406" y="440" width="7" height="34" fill="#5C4033" /><ellipse cx="409" cy="437" rx="17" ry="19" fill="#4CAF50" />
-              <rect x="866" y="444" width="7" height="30" fill="#5C4033" /><ellipse cx="869" cy="441" rx="17" ry="19" fill="#56A042" />
-
-             
-              {/* ROAD 2 */}
-              <rect x="0" y="485" width="1034" height="60" fill="#B5A48A" />
-              <line x1="0" y1="515" x2="1034" y2="515" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="18 12" />
-
-              {/* GRASS FILL right of Road 2 */}
-              <rect x="1034" y="485" width="166" height="60" fill="#6B9E48" />
-
-              {/* LOWER GRASS */}
-              <rect y="545" width="1200" height="205" fill="#5D8A3C" />
-              <rect x="366" y="575" width="7" height="36" fill="#5C4033" /><ellipse cx="369" cy="572" rx="17" ry="20" fill="#4CAF50" />
-              <rect x="946" y="585" width="7" height="34" fill="#5C4033" /><ellipse cx="949" cy="582" rx="17" ry="20" fill="#56A042" />
-              <rect x="1120" y="595" width="7" height="30" fill="#5C4033" /><ellipse cx="1123" cy="592" rx="16" ry="18" fill="#4CAF50" />
-
-              {/* CONNECTOR A — between Road 1 and Road 2, right side */}
-              <rect x="986" y="420" width="48" height="65" fill="#A8977E" />
-              <line x1="1010" y1="422" x2="1010" y2="483" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
-
-              {/* CONNECTOR B — between Road 1 and Road 2, centre */}
-              <rect x="686" y="420" width="48" height="65" fill="#A8977E" />
-              <line x1="710" y1="422" x2="710" y2="483" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
-
-              {/* CONNECTOR C — from Road 2 down to bottom */}
-              <rect x="586" y="545" width="48" height="105" fill="#A8977E" />
-              <line x1="610" y1="547" x2="610" y2="645" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
-
-              {/* CONNECTOR D — from sky down to Road 1 */}
-              <rect x="586" y="295" width="48" height="65" fill="#A8977E" />
-              <line x1="610" y1="300" x2="610" y2="355" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="14 10" />
-
-            </svg>
-
-            {/* ── OVERLAY NODES ── */}
-            <div className={s.nodesLayer}>
-
-              {/* TITLE + LIGHTHOUSE */}
-              <div className={s.titleRow}>
-                <motion.div layoutId="lighthouse" transition={{ type: 'spring', stiffness: 70 }}>
-                  <Lighthouse size={58} />
-                </motion.div>
-                <h1 className={`${s.title} ${cinzel.className}`}>
-                  <span className={s.textSlate}>MEDICAL </span>
-                  <span className={s.textRed}>CROSS</span>
-                  <span className={s.textSlate}>WAY</span>
-                </h1>
-              </div>
-
-              {/* ALLIED HEALTH */}
-              <div className={s.alliedRow}>
-                {[
-                  { label: 'Dentistry', color: '#9C27B0' },
-                  { label: 'Nursing', color: '#E91E63' },
-                  { label: 'Homeopathy', color: '#4CAF50' },
-                  { label: 'Chiropractic', color: '#FF9800' },
-                  { label: 'Ayurveda', color: '#009688' },
-                  { label: 'Veterinary', color: '#2196F3' },
-                ].map(({ label, color }) => (
-                  <div key={label} className={s.alliedItem}>
-                    <div className={s.alliedHouse} style={{ '--house-color': color } as React.CSSProperties} />
-                    <span className={s.alliedLabel}>{label}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* MBBS ABROAD — sky, above connector D */}
-              <div className={s.node} style={pct(950, 360)}>
-                <div style={{ transform: 'scaleX(-1)' }}>
-                  <Plane size={110} />
+                {/* Allied Cluster (Aligned to alliedRoad end) */}
+                <div className={s.alliedCluster} style={pct(330, 530)}>
+                   <div className={s.houseRow}>
+                     <div className={s.alliedItem}><div className={s.alliedHouse} /><span className={s.alliedLabel}>Nursing</span></div>
+                     <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#e67e22'} as any} /><span className={s.alliedLabel}>Dentist</span></div>
+                   </div>
+                   <div className={s.houseRow}>
+                     <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#27ae60'} as any} /><span className={s.alliedLabel}>Ayurveda</span></div>
+                   </div>
                 </div>
-                <span className={s.nodeTitle}>MBBS Abroad</span>
-                <span className={s.nodeSub}>Russia · Philippines · more</span>
-              </div>
 
-              {/* HIGH SCHOOL — left, Road 1 */}
-              <div className={s.node} style={pct(266, 390)}>
-                <School size={100} />
-                <span className={s.nodeTitle}>High School</span>
-                <span className={s.nodeSub}>Any medicine · PCB</span>
-              </div>
+                {/* Airport 1: MBBS Abroad */}
+                <Node pos={pct(900, 257)}>
+                  <Plane size={200 * sz} />
+                  <span className={s.nodeTitle}>MBBS Abroad</span>
+                </Node>
 
-              {/* MBBS INDIA — middle grass, between connectors B and A */}
-              <div className={s.node} style={pct(818, 462)}>
-                <University size={90} />
-                <span className={s.nodeTitle}>MBBS</span>
-                <span className={s.nodeSub}>Medical college · NEET UG</span>
-              </div>
+                {/* University: MBBS India */}
+                <Node pos={pct(755, 440)}>
+                  <University size={150 * sz} />
+                  <span className={s.nodeTitle}>MBBS India</span>
+                </Node>
 
-              {/* FMGE — middle grass, right of connector A */}
-              <div className={s.node} style={pct(1100, 452)}>
-                <div className={s.fmgeBox}>
-                  <div className={s.fmgeStripe} />
-                  <div className={s.fmgeTextWrap}>
-                    <span className={s.fmgeTitle}>FMGE · Back to India</span>
-                    <span className={s.fmgeSub}>Re-enter Indian medical system</span>
+                {/* FMGE Toll */}
+                <Node pos={pct(1040, 540)}>
+                  <div className={s.fmgeBox}>
+                    <div className={s.fmgeStripe} />
+                    <div className={s.fmgeTextWrap}><span className={s.fmgeTitle}>FMGE TOLL</span></div>
                   </div>
-                </div>
-              </div>
+                </Node>
 
-              {/* PG / RESIDENCY HOSPITAL — left, Road 2 */}
-              <div className={s.node} style={pct(266, 515)}>
-                <Hospital size={100} />
-                <span className={s.nodeTitle}>PG / Residency</span>
-                <span className={s.nodeSub}>MD · MS · NEET PG</span>
-              </div>
+                {/* HOSPITAL: PG Residency (India) */}
+                <Node pos={pct(10, 545)}>
+                  <Hospital size={150 * sz} />
+                  <span className={s.nodeTitle}>PG Residency</span>
+                </Node>
 
-              {/* RESIDENCY ABROAD — bottom of connector C */}
-              <div className={s.node} style={pct(610, 680)}>
-                <Plane size={100} />
-                <span className={s.nodeTitle}>Residency Abroad</span>
-                <span className={s.nodeSub}>USMLE · PLAB · AMC · more</span>
+                {/* AIRPORT 2: PG Abroad */}
+                <Node pos={pct(10, 625)}>
+                  <Plane size={200 * sz} />
+                  <span className={s.nodeTitle}>PG Abroad</span>
+                </Node>
               </div>
-
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </main>
+  )
+}
+
+function Node({ pos, children }: { pos: any, children: React.ReactNode }) {
+  return (
+    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className={s.node} style={pos}>
+      {children}
+    </motion.div>
   )
 }
