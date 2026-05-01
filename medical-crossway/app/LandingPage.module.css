@@ -1,14 +1,15 @@
 .main {
   width: 100vw;
   height: 100dvh;
-  overflow: hidden;
-  /* Multi-layered background: Sky -> Lighting Gradient -> Solid Green */
+  overflow: hidden; /* Prevent all scrolling */
   background: 
-    /* Changed 12.1% to 12% to make a perfectly sharp horizon */
     linear-gradient(to bottom, #87CEEB 0%, #87CEEB 12%, transparent 12%),
     radial-gradient(circle at 50% 40%, #8ecb6d 0%, #7eb55d 70%, #6a9a4d 100%);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
+
 .main::before {
   content: "";
   position: absolute;
@@ -21,46 +22,55 @@
 .introContainer {
   position: fixed; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  z-index: 100; background: #87CEEB;
+  z-index: 1000; background: #87CEEB;
 }
 
 .speech {
   position: absolute; top: calc(50% + 120px); left: 50%;
   background: #fff; padding: 12px 20px; border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd;
-  z-index: 101;
-}
-
-.speechText {
-  font-size: clamp(14px, 3.5vw, 16px);
-  color: #37474f; margin: 0; text-align: center;
+  z-index: 101; transform: translateX(-50%);
 }
 
 .titleRow {
-  position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 12px; z-index: 200; white-space: nowrap;
+  width: 100%;
+  padding: 1vh 0; /* Scaling padding based on height */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px; 
+  z-index: 200;
+  flex-shrink: 0;
 }
 
 .title {
-  font-size: clamp(16px, 2.5vw, 28px); font-weight: 800; letter-spacing: 1px;
+  font-size: clamp(18px, 4vh, 28px); 
+  font-weight: 800; 
+  margin: 0;
 }
 
 .textSlate { color: #2c3e50; }
 .textRed   { color: #c0392b; }
 
 .mapWrapper {
-  width: 100%; height: 100%; display: flex; align-items: flex-start; 
-  padding-top: 60px; justify-content: center;
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .mapCanvas {
   position: relative; 
-  width: 100%; 
-  max-width: 1200px; 
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  /* Crucial: Maintain aspect ratio but don't exceed wrapper height */
   aspect-ratio: 1200 / 750;
-  background: transparent;
-  /* Give the whole map a slight tilt feel */
-  perspective: 1000px;
+  max-height: 100%; 
 }
 
 .mapSvg {
@@ -74,40 +84,35 @@
   display: flex; 
   flex-direction: row; 
   align-items: center; 
-  /* Set gap to 0 so they touch */
-  gap: 0;           
   pointer-events: auto; 
-  /* Adjusted X-translation to -15% to keep the icon better centered on the road */
   transform: translate(-15%, -50%); 
   filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
 }
+
 .nodeTitle {
-  color: #2c3e50;       /* ADD THIS LINE: Explicit dark color */
-  font-size: clamp(9px, 1.1vw, 13px); 
+  color: #2c3e50;
+  font-size: clamp(8px, 1.3vh, 13px); /* Scale font with height */
   font-weight: 800;
   background: white; 
-  padding: 4px 10px;   
+  padding: 2px 8px;   
   border-radius: 4px;
-  margin-top: 0;        
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   white-space: nowrap;
-  margin-left: -2px; 
 }
-.decoration {
-  opacity: 0.4;
-  fill: #5a8a41;
-}
+
 .alliedCluster {
   position: absolute; display: flex; flex-direction: column;
-  align-items: center; gap: 10px; transform: translate(-50%, -50%);
+  align-items: center; gap: 8px; transform: translate(-50%, -50%);
 }
-.houseRow { display: flex; gap: 15px; }
+.houseRow { display: flex; gap: 12px; }
 .alliedItem { display: flex; flex-direction: column; align-items: center; }
 .alliedHouse {
-  width: 25px; height: 25px; background: #9b59b6;
+  width: clamp(15px, 3vh, 25px); 
+  height: clamp(15px, 3vh, 25px);
+  background: #9b59b6;
   clip-path: polygon(50% 0%, 0% 40%, 0% 100%, 100% 100%, 100% 40%);
 }
-.alliedLabel { font-size: 10px; font-weight: bold; color: #2c3e50; margin-top: 2px; }
+.alliedLabel { font-size: clamp(7px, 1vh, 10px); font-weight: bold; color: #2c3e50; }
 
 .fmgeBox {
   display: flex; background: white; border: 1.5px solid #333; border-radius: 4px; overflow: hidden;
@@ -118,5 +123,5 @@
 .fmgeTextWrap { padding: 3px 8px; font-size: 9px; font-weight: 900; color: #c0392b; }
 
 @media (max-width: 640px) {
-  .mapCanvas { width: 180%; left: -40%; }
+  .mapCanvas { width: 100%; height: auto; }
 }

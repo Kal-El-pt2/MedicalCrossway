@@ -36,27 +36,15 @@ export default function LandingPage() {
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
-  const sz = isMobile ? 0.5 : 0.85
+  // Icon sizing: slightly smaller for standard screens to prevent overlap
+  const sz = isMobile ? 0.45 : 0.75 
 
-  // ── ROAD PATH DEFINITIONS ──
-  
-  // 1. Top Section: School (x:60) -> Curve -> MBBS Abroad (x:900)
   const topRoad = "M 60 130 C 60 400, 250 400, 400 400 L 1010 400";
-  
-  // 2. Allied Cluster Branch: Starts exactly at center of top road (y:400)
   const alliedRoad = "M 330 400 L 330 485";
-
-  // 3. The Drops: University and FMGE roads
   const universityDrop = "M 730 400 L 730 620";
   const fmgeDrop = "M 1020 400 L 1020 620";
-  
-  // 4. The Combined Horizontal Road
   const mergerLine = "M 1020 620 L 600 620";
-  
-  // 5. Final Branch A: To PG India (Hospital)
   const branchIndia = "M 600 620 L 100 620";
-  
-  // 6. Final Branch B: To PG Abroad (Airport 2)
   const branchAbroad = "M 600 620 Q 600 705 450 725 L 100 725";
 
   return (
@@ -81,11 +69,11 @@ export default function LandingPage() {
 
         {/* ── ROADMAP PHASE ── */}
         {phase === 'roadmap' && (
-          <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={s.mapWrapper}>
+          <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{height: '100%', width: '100%', display: 'flex', flexDirection: 'column'}}>
             
             <div className={s.titleRow}>
               <motion.div layoutId="lighthouse-icon">
-                <Lighthouse size={isMobile ? 35 : 55} />
+                <Lighthouse size={isMobile ? 35 : 50} />
               </motion.div>
               <h1 className={`${s.title} ${cinzel.className}`}>
                 <span className={s.textSlate}>MEDICAL </span>
@@ -94,81 +82,72 @@ export default function LandingPage() {
               </h1>
             </div>
 
-            <div className={s.mapCanvas}>
-              <svg className={s.mapSvg} viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice">
-                
-                {/* ── SOLID ROADS (BROWN) ── */}
-                <g stroke="#B5A48A" strokeWidth="60" fill="none" strokeLinecap="round">
-                  <path d={topRoad} />
-                  <path d={alliedRoad} />
-                  <path d={universityDrop} strokeLinecap="butt" /> {/* Butt prevents overlap bulge */}
-                  <path d={fmgeDrop} />
-                  <path d={mergerLine} strokeLinecap="butt" />
-                  <path d={branchIndia} />
-                  <path d={branchAbroad} />
-                </g>
+            <div className={s.mapWrapper}>
+              <div className={s.mapCanvas}>
+                <svg className={s.mapSvg} viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid meet">
+                  <g stroke="#B5A48A" strokeWidth="60" fill="none" strokeLinecap="round">
+                    <path d={topRoad} />
+                    <path d={alliedRoad} />
+                    <path d={universityDrop} strokeLinecap="butt" />
+                    <path d={fmgeDrop} />
+                    <path d={mergerLine} strokeLinecap="butt" />
+                    <path d={branchIndia} />
+                    <path d={branchAbroad} />
+                  </g>
+                  <g fill="none" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="15 10">
+                    <path d={topRoad} />
+                    <path d={alliedRoad} />
+                    <path d={universityDrop} />
+                    <path d={fmgeDrop} />
+                    <path d={mergerLine} />
+                    <path d={branchIndia} />
+                    <path d={branchAbroad} />
+                  </g>
+                </svg>
 
-                {/* ── DASHED MARKINGS (CENTER LINES) ── */}
-                <g fill="none" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="15 10">
-                   <path d={topRoad} />
-                   <path d={alliedRoad} />
-                   <path d={universityDrop} />
-                   <path d={fmgeDrop} />
-                   <path d={mergerLine} />
-                   <path d={branchIndia} />
-                   <path d={branchAbroad} />
-                </g>
-              </svg>
+                <div className={s.nodesLayer}>
+                  <Node pos={pct(5, 55)}>
+                    <School size={150 * sz} />
+                    <span className={s.nodeTitle}>High School</span>
+                  </Node>
 
-              <div className={s.nodesLayer}>
-                {/* School */}
-                <Node pos={pct(5, 55)}>
-                  <School size={150 * sz} />
-                  <span className={s.nodeTitle}>High School</span>
-                </Node>
-
-                {/* Allied Cluster (Aligned to alliedRoad end) */}
-                <div className={s.alliedCluster} style={pct(330, 530)}>
-                   <div className={s.houseRow}>
-                     <div className={s.alliedItem}><div className={s.alliedHouse} /><span className={s.alliedLabel}>Nursing</span></div>
-                     <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#e67e22'} as any} /><span className={s.alliedLabel}>Dentist</span></div>
-                   </div>
-                   <div className={s.houseRow}>
-                     <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#27ae60'} as any} /><span className={s.alliedLabel}>Ayurveda</span></div>
-                   </div>
-                </div>
-
-                {/* Airport 1: MBBS Abroad */}
-                <Node pos={pct(900, 257)}>
-                  <Plane size={200 * sz} />
-                  <span className={s.nodeTitle}>MBBS Abroad</span>
-                </Node>
-
-                {/* University: MBBS India */}
-                <Node pos={pct(755, 440)}>
-                  <University size={150 * sz} />
-                  <span className={s.nodeTitle}>MBBS India</span>
-                </Node>
-
-                {/* FMGE Toll */}
-                <Node pos={pct(1040, 540)}>
-                  <div className={s.fmgeBox}>
-                    <div className={s.fmgeStripe} />
-                    <div className={s.fmgeTextWrap}><span className={s.fmgeTitle}>FMGE TOLL</span></div>
+                  <div className={s.alliedCluster} style={pct(330, 535)}>
+                    <div className={s.houseRow}>
+                      <div className={s.alliedItem}><div className={s.alliedHouse} /><span className={s.alliedLabel}>Nursing</span></div>
+                      <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#e67e22'} as any} /><span className={s.alliedLabel}>Dentist</span></div>
+                    </div>
+                    <div className={s.houseRow}>
+                      <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#27ae60'} as any} /><span className={s.alliedLabel}>Ayurveda</span></div>
+                    </div>
                   </div>
-                </Node>
 
-                {/* HOSPITAL: PG Residency (India) */}
-                <Node pos={pct(10, 545)}>
-                  <Hospital size={150 * sz} />
-                  <span className={s.nodeTitle}>PG Residency</span>
-                </Node>
+                  <Node pos={pct(900, 257)}>
+                    <Plane size={200 * sz} />
+                    <span className={s.nodeTitle}>MBBS Abroad</span>
+                  </Node>
 
-                {/* AIRPORT 2: PG Abroad */}
-                <Node pos={pct(10, 625)}>
-                  <Plane size={200 * sz} />
-                  <span className={s.nodeTitle}>PG Abroad</span>
-                </Node>
+                  <Node pos={pct(755, 440)}>
+                    <University size={150 * sz} />
+                    <span className={s.nodeTitle}>MBBS India</span>
+                  </Node>
+
+                  <Node pos={pct(1040, 540)}>
+                    <div className={s.fmgeBox}>
+                      <div className={s.fmgeStripe} />
+                      <div className={s.fmgeTextWrap}><span className={s.fmgeTitle}>FMGE TOLL</span></div>
+                    </div>
+                  </Node>
+
+                  <Node pos={pct(10, 545)}>
+                    <Hospital size={150 * sz} />
+                    <span className={s.nodeTitle}>PG Residency</span>
+                  </Node>
+
+                  <Node pos={pct(10, 625)}>
+                    <Plane size={200 * sz} />
+                    <span className={s.nodeTitle}>PG Abroad</span>
+                  </Node>
+                </div>
               </div>
             </div>
           </motion.div>
