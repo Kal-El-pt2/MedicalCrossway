@@ -9,14 +9,17 @@ import Hospital from '@/components/Hospital'
 import Lighthouse from '@/components/Lighthouse'
 import Plane from '@/components/Plane'
 import University from '@/components/University'
+import RoadmapBackground from '@/components/RoadmapBackground'
 
 const cinzel = Cinzel({ subsets: ['latin'], weight: ['700', '800'] })
 
 type Phase = 'lamp' | 'speech' | 'roadmap'
 
+// This helper now uses CSS variables defined in the module.css
+// It calculates the position relative to the dynamic map size
 const pct = (x: number, y: number) => ({
-  left: `${(x / 1200) * 100}%`,
-  top: `${(y / 750) * 100}%`,
+  left: `calc((${x} / 1200) * var(--map-width))`,
+  top: `calc((${y} / 750) * var(--map-height))`,
 })
 
 export default function LandingPage() {
@@ -36,24 +39,25 @@ export default function LandingPage() {
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
-  // Icon sizing: slightly smaller for standard screens to prevent overlap
-  const sz = isMobile ? 0.45 : 0.75 
+  const sz = isMobile ? 0.45 : 0.65
 
-  const topRoad = "M 60 130 C 60 400, 250 400, 400 400 L 1010 400";
-  const alliedRoad = "M 330 400 L 330 485";
-  const universityDrop = "M 730 400 L 730 620";
-  const fmgeDrop = "M 1020 400 L 1020 620";
-  const mergerLine = "M 1020 620 L 600 620";
-  const branchIndia = "M 600 620 L 100 620";
-  const branchAbroad = "M 600 620 Q 600 705 450 725 L 100 725";
+  // Road Paths
+  const R1 = "M 80 140 C 60 240, 240 240, 240 240 L 890 240";
+  const R2 = "M 330 240 C 420 240, 480 300, 480 325";
+  const R3 = "M 730 240 L 730 350";
+  const R4 = "M 1020 280 L 1020 620";
+  const R5 = "M 730 485 L 730 620";
+  const R6 = "M 1020 620 L 600 620";
+  const R7 = "M 600 620 Q 600 705 450 725 L 160 725";
+  const R8 = "M 600 620 L 160 620";
 
   return (
     <main className={s.main}>
       <AnimatePresence mode="wait">
-        
-        {/* ── INTRO PHASE ── */}
+
+        {/* ── INTRO PHASE (Same as before) ── */}
         {(phase === 'lamp' || phase === 'speech') && (
-          <motion.div key="intro" className={s.introContainer} exit={{ opacity: 0 }}>
+          <motion.div key="intro" className={s.introContainer} exit={{ opacity: 0, transition: { duration: 0.8 } }}>
             <motion.div layoutId="lighthouse-icon">
               <Lighthouse size={isMobile ? 120 : 180} />
             </motion.div>
@@ -69,82 +73,76 @@ export default function LandingPage() {
 
         {/* ── ROADMAP PHASE ── */}
         {phase === 'roadmap' && (
-          <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{height: '100%', width: '100%', display: 'flex', flexDirection: 'column'}}>
-            
-            <div className={s.titleRow}>
+          <motion.div key="roadmap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={s.roadmapWrapper}>
+            <RoadmapBackground />
+
+            <header className={s.titleRow}>
               <motion.div layoutId="lighthouse-icon">
-                <Lighthouse size={isMobile ? 35 : 50} />
+                <Lighthouse size={isMobile ? 35 : 55} />
               </motion.div>
               <h1 className={`${s.title} ${cinzel.className}`}>
                 <span className={s.textSlate}>MEDICAL </span>
                 <span className={s.textRed}>CROSS</span>
                 <span className={s.textSlate}>WAY</span>
               </h1>
-            </div>
+            </header>
 
             <div className={s.mapWrapper}>
               <div className={s.mapCanvas}>
-                <svg className={s.mapSvg} viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid meet">
-                  <g stroke="#B5A48A" strokeWidth="60" fill="none" strokeLinecap="round">
-                    <path d={topRoad} />
-                    <path d={alliedRoad} />
-                    <path d={universityDrop} strokeLinecap="butt" />
-                    <path d={fmgeDrop} />
-                    <path d={mergerLine} strokeLinecap="butt" />
-                    <path d={branchIndia} />
-                    <path d={branchAbroad} />
+                <svg className={s.mapSvg} viewBox="0 0 1200 750" preserveAspectRatio="none">
+                  <g stroke="#B5A48A" strokeWidth="35" fill="none" strokeLinecap="round" opacity="0.8">
+                    <path d={R1} /><path d={R2} /><path d={R3} />
+                    <path d={R4} /><path d={R5}  /><path d={R6} />
+                    <path d={R8} /><path d={R7} />
                   </g>
-                  <g fill="none" stroke="#D4C9B0" strokeWidth="2" strokeDasharray="15 10">
-                    <path d={topRoad} />
-                    <path d={alliedRoad} />
-                    <path d={universityDrop} />
-                    <path d={fmgeDrop} />
-                    <path d={mergerLine} />
-                    <path d={branchIndia} />
-                    <path d={branchAbroad} />
+                  <g fill="none" stroke="white" strokeWidth="1.5" strokeDasharray="10 8" opacity="0.6">
+                    <path d={R1} /><path d={R2} /><path d={R3} /><path d={R4} /><path d={R5} /><path d={R6} /><path d={R8} /><path d={R7} />
                   </g>
                 </svg>
 
                 <div className={s.nodesLayer}>
-                  <Node pos={pct(5, 55)}>
-                    <School size={150 * sz} />
+                  <Node pos={pct(0, 70)}>
+                    <School size={160 * sz} />
                     <span className={s.nodeTitle}>High School</span>
                   </Node>
 
-                  <div className={s.alliedCluster} style={pct(330, 535)}>
-                    <div className={s.houseRow}>
-                      <div className={s.alliedItem}><div className={s.alliedHouse} /><span className={s.alliedLabel}>Nursing</span></div>
-                      <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#e67e22'} as any} /><span className={s.alliedLabel}>Dentist</span></div>
+                  <div className={s.alliedCluster} style={pct(580, 415) as any}>
+                    <div className={s.alliedHousesGroup}>
+                      <div className={s.houseRow}>
+                        <div className={s.alliedItem}><div className={s.alliedHouse} style={{ background: '#9b59b6' }} /><span className={s.alliedLabel}>Nursing</span></div>
+                        <div className={s.alliedItem}><div className={s.alliedHouse} style={{ background: '#e67e22' }} /><span className={s.alliedLabel}>Dentist</span></div>
+                      </div>
+                      <div className={s.houseRow}>
+                        <div className={s.alliedItem}><div className={s.alliedHouse} style={{ background: '#27ae60' }} /><span className={s.alliedLabel}>Ayurveda</span></div>
+                      </div>
                     </div>
-                    <div className={s.houseRow}>
-                      <div className={s.alliedItem}><div className={s.alliedHouse} style={{background:'#27ae60'} as any} /><span className={s.alliedLabel}>Ayurveda</span></div>
-                    </div>
+                    <span className={s.nodeTitle}>Allied Sciences</span>
                   </div>
 
-                  <Node pos={pct(900, 257)}>
-                    <Plane size={200 * sz} />
+                  <Node pos={pct(930, 120)} className={s.airportNode}>
+                    <Plane size={220 * sz} />
                     <span className={s.nodeTitle}>MBBS Abroad</span>
                   </Node>
 
-                  <Node pos={pct(755, 440)}>
-                    <University size={150 * sz} />
+                  <Node pos={pct(670, 350)}>
+                    <University size={160 * sz} />
                     <span className={s.nodeTitle}>MBBS India</span>
                   </Node>
 
-                  <Node pos={pct(1040, 540)}>
+                  <Node pos={pct(1020, 560)}>
                     <div className={s.fmgeBox}>
                       <div className={s.fmgeStripe} />
                       <div className={s.fmgeTextWrap}><span className={s.fmgeTitle}>FMGE TOLL</span></div>
                     </div>
                   </Node>
 
-                  <Node pos={pct(10, 545)}>
-                    <Hospital size={150 * sz} />
+                  <Node pos={pct(10, 520)}>
+                    <Hospital size={160 * sz} />
                     <span className={s.nodeTitle}>PG Residency</span>
                   </Node>
 
-                  <Node pos={pct(10, 625)}>
-                    <Plane size={200 * sz} />
+                  <Node pos={pct(10, 635)} className={s.airportNode}>
+                    <Plane size={180 * sz} />
                     <span className={s.nodeTitle}>PG Abroad</span>
                   </Node>
                 </div>
@@ -157,9 +155,14 @@ export default function LandingPage() {
   )
 }
 
-function Node({ pos, children }: { pos: any, children: React.ReactNode }) {
+function Node({ pos, children, className }: { pos: any, children: React.ReactNode, className?: string }) {
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className={s.node} style={pos}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className={`${s.node} ${className || ''}`}
+      style={pos}
+    >
       {children}
     </motion.div>
   )
