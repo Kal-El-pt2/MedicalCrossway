@@ -1,24 +1,22 @@
 .main {
   width: 100vw;
   height: 100dvh;
-  overflow: hidden; /* Prevent all scrolling */
-  background: 
-    linear-gradient(to bottom, #87CEEB 0%, #87CEEB 12%, transparent 12%),
-    radial-gradient(circle at 50% 40%, #8ecb6d 0%, #7eb55d 70%, #6a9a4d 100%);
+  overflow: hidden;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  background: #87CEEB;
 }
 
 .main::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.15;
+  opacity: 0.1;
   pointer-events: none;
+  z-index: 5;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
+/* ── INTRO ── */
 .introContainer {
   position: fixed; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -26,32 +24,54 @@
 }
 
 .speech {
-  position: absolute; top: calc(50% + 120px); left: 50%;
-  background: #fff; padding: 12px 20px; border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd;
-  z-index: 101; transform: translateX(-50%);
+  position: absolute; 
+  top: calc(50% + 120px); 
+  left: 50%;
+  background: white; 
+  padding: 12px 20px; 
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+  border: 1px solid #e0e0e0;
+  z-index: 2000;
+}
+
+.speechText {
+  font-size: clamp(14px, 2vh, 18px);
+  color: #2c3e50;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── ROADMAP CONTAINER ── */
+.roadmapWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
 }
 
 .titleRow {
   width: 100%;
-  padding: 1vh 0; /* Scaling padding based on height */
+  padding: 2vh 0; 
   display: flex; 
   align-items: center; 
   justify-content: center; 
-  gap: 12px; 
+  gap: 15px;
   z-index: 200;
-  flex-shrink: 0;
 }
 
 .title {
-  font-size: clamp(18px, 4vh, 28px); 
+  font-size: clamp(20px, 4vh, 42px); 
   font-weight: 800; 
   margin: 0;
 }
-
 .textSlate { color: #2c3e50; }
 .textRed   { color: #c0392b; }
 
+/* ── THE MAP ENGINE ── */
 .mapWrapper {
   flex-grow: 1;
   width: 100%;
@@ -60,68 +80,124 @@
   justify-content: center;
   padding: 20px;
   box-sizing: border-box;
-  overflow: hidden;
+
+  /* Default: Scale based on width for mobile/portrait */
+  --map-width: 90vw;
+  --map-height: calc(var(--map-width) * (750 / 1200));
+}
+
+/* If the screen is wide (Desktop), scale based on height so it doesn't overflow */
+@media (min-aspect-ratio: 1200/750) {
+  .mapWrapper {
+    --map-height: 70vh;
+    --map-width: calc(var(--map-height) * (1200 / 750));
+  }
 }
 
 .mapCanvas {
   position: relative; 
-  width: 100%;
-  height: 100%;
-  max-width: 1200px;
-  /* Crucial: Maintain aspect ratio but don't exceed wrapper height */
-  aspect-ratio: 1200 / 750;
-  max-height: 100%; 
+  width: var(--map-width);
+  height: var(--map-height);
 }
 
-.mapSvg {
-  width: 100%; height: 100%; display: block; overflow: visible;
+.mapSvg { 
+  position: absolute;
+  inset: 0;
+  width: 100%; 
+  height: 100%; 
+  display: block; 
 }
 
-.nodesLayer { position: absolute; inset: 0; pointer-events: none; }
+.nodesLayer { 
+  position: absolute; 
+  inset: 0; 
+  pointer-events: none; 
+  filter: drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.15)); 
+}
 
 .node {
   position: absolute; 
   display: flex; 
-  flex-direction: row; 
-  align-items: center; 
+  flex-direction: row; /* CHANGED: vertical to horizontal */
+  align-items: center; /* Center text vertically against image */
   pointer-events: auto; 
-  transform: translate(-15%, -50%); 
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+  transform: translate(-50%, -50%); 
 }
 
 .nodeTitle {
+  margin-left: 8px; /* CHANGED: margin-top to margin-left */
   color: #2c3e50;
-  font-size: clamp(8px, 1.3vh, 13px); /* Scale font with height */
+  font-size: clamp(8px, 1.2vh, 12px);
   font-weight: 800;
-  background: white; 
+  background: rgba(255, 255, 255, 0.95); 
   padding: 2px 8px;   
   border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
 }
 
+/* Specifically target Airport icons because they have internal right-side padding */
+.airportNode .nodeTitle {
+  margin-left: -30px; /* Pull the text "into" the airport's transparent side area */
+}
+
+/* ── ALLIED CLUSTER (Horizontal Layout) ── */
 .alliedCluster {
-  position: absolute; display: flex; flex-direction: column;
-  align-items: center; gap: 8px; transform: translate(-50%, -50%);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row; /* Houses on left, Label on right */
+  align-items: center;
+  gap: 10px;
 }
-.houseRow { display: flex; gap: 12px; }
-.alliedItem { display: flex; flex-direction: column; align-items: center; }
+
+.alliedHousesGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.houseRow {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.alliedItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .alliedHouse {
-  width: clamp(15px, 3vh, 25px); 
-  height: clamp(15px, 3vh, 25px);
-  background: #9b59b6;
-  clip-path: polygon(50% 0%, 0% 40%, 0% 100%, 100% 100%, 100% 40%);
+  width: clamp(15px, 3vh, 30px);
+  height: clamp(15px, 3vh, 30px);
+  border-radius: 4px;
+  border: 2px solid white;
 }
-.alliedLabel { font-size: clamp(7px, 1vh, 10px); font-weight: bold; color: #2c3e50; }
 
+.alliedLabel {
+  font-size: 8px;
+  font-weight: 700;
+  color: #444;
+}
+
+/* ── FMGE TOLL BOX ── */
 .fmgeBox {
-  display: flex; background: white; border: 1.5px solid #333; border-radius: 4px; overflow: hidden;
+  background: #f1c40f;
+  border: 3px solid #2c3e50;
+  padding: 4px 8px;
+  transform: rotate(-5deg);
+  margin-left: 10px; /* Space it from the road node center */
 }
-.fmgeStripe {
-  width: 10px; background: repeating-linear-gradient(-45deg, #f1c40f, #f1c40f 5px, #333 5px, #333 10px);
-}
-.fmgeTextWrap { padding: 3px 8px; font-size: 9px; font-weight: 900; color: #c0392b; }
 
-@media (max-width: 640px) {
-  .mapCanvas { width: 100%; height: auto; }
+
+.fmgeTitle {
+  font-weight: 900;
+  font-size: clamp(10px, 1.5vh, 14px);
+  color: #2c3e50;
 }
