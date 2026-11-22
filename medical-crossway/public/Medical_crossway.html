@@ -449,6 +449,10 @@
                   .btn-si:active{transform:var(--press)}
                   .btn-si:focus-visible{outline:2px solid rgba(240,200,64,.55);outline-offset:2px}
                   .btn-si svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+                  #auth-dialog{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);margin:0;width:min(440px,calc(100% - 32px));max-height:calc(100vh - 32px);overflow:auto;padding:0;border:1px solid rgba(248,240,220,.2);border-radius:16px;background:#101938;color:#f8f0dc;box-shadow:0 28px 90px rgba(0,0,0,.5)}
+                  #auth-dialog::backdrop{background:rgba(4,8,27,.72);backdrop-filter:blur(5px)}
+                  .auth-card{padding:30px}.auth-top{display:flex;justify-content:space-between;align-items:start;gap:16px}.auth-eyebrow{color:#d4b872;font-size:10px;letter-spacing:.17em;text-transform:uppercase}.auth-title{font:30px/1.1 Georgia,serif;margin:8px 0}.auth-close{border:1px solid rgba(248,240,220,.22);border-radius:50%;width:36px;height:36px;color:#f8f0dc;background:transparent;font-size:19px;cursor:pointer}.auth-copy{color:rgba(248,240,220,.72);font-size:13px;margin:10px 0 20px}.auth-field{display:block;margin:13px 0;color:rgba(248,240,220,.86);font-size:12px}.auth-field[hidden]{display:none}.auth-field input{display:block;width:100%;margin-top:6px;border:1px solid rgba(248,240,220,.22);border-radius:7px;padding:11px 12px;background:#0a112b;color:#fff;outline:none}.auth-field input:focus{border-color:#d4b872;box-shadow:0 0 0 3px rgba(212,184,114,.15)}.auth-submit{width:100%;justify-content:center;margin-top:8px}.auth-switch{display:block;margin:17px auto 0;border:0;background:none;color:#e1c77f;font-size:12px;cursor:pointer}.auth-status{min-height:18px;margin:13px 0 0;color:#f0d89c;font-size:12px;line-height:1.45}.auth-foot{margin-top:19px;padding-top:15px;border-top:1px solid rgba(248,240,220,.15);color:rgba(248,240,220,.55);font-size:10px;line-height:1.5}
+                  .auth-google{width:100%;min-height:43px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(248,240,220,.28);border-radius:7px;background:#fff;color:#263238;font-size:13px;font-weight:600;cursor:pointer}.auth-google:hover{background:#f4f1e9}.auth-google-mark{font:bold 18px Arial,sans-serif;color:#4285f4}.auth-or{display:flex;align-items:center;gap:12px;margin:15px 0;color:rgba(248,240,220,.55);font-size:10px;text-transform:uppercase;letter-spacing:.12em}.auth-or:before,.auth-or:after{content:"";height:1px;flex:1;background:rgba(248,240,220,.18)}
 
                   /* ── PAGES ──
                    *
@@ -3476,6 +3480,28 @@
       </div>
     </header>
 
+    <dialog id="auth-dialog" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <div class="auth-top">
+          <div><div class="auth-eyebrow">Medical Crossway account</div><h2 class="auth-title" id="auth-title">Welcome back</h2></div>
+          <button class="auth-close" type="button" data-auth-close aria-label="Close sign in">×</button>
+        </div>
+        <p class="auth-copy" id="auth-copy">Sign in to continue your medical journey.</p>
+        <form id="auth-form">
+          <button class="auth-google" type="button" id="google-auth"><span class="auth-google-mark" aria-hidden="true">G</span>Continue with Google</button>
+          <div class="auth-or">or use email</div>
+          <label class="auth-field auth-name" hidden>Full name<input name="name" autocomplete="name" placeholder="Your name"></label>
+          <label class="auth-field">Email<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+          <label class="auth-field">Password<input name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters"></label>
+          <button class="btn auth-submit" type="submit" id="auth-submit">Sign In</button>
+          <div class="auth-status" id="auth-status" role="status" aria-live="polite"></div>
+        </form>
+        <button class="auth-switch" type="button" id="auth-switch">New to Medical Crossway? Create an account</button>
+        <button class="auth-switch" type="button" id="auth-signout" hidden>Sign out</button>
+        <div class="auth-foot">Your account will work across Medical Crossway and Research Labs. Credentials will only be submitted once secure sign-in is connected.</div>
+      </div>
+    </dialog>
+
     <main
       id="page1"
       class="page on"
@@ -4090,6 +4116,7 @@ As Chief Technology Officer, Walia is the architect responsible for transforming
               { label: "Visa", page: 3, journey: "mbbsa" },
             ],
           },
+          { label: "Research et al", link: "/research" },
         ],
         bottomBar: [],
         bottomBarByJourney: {
@@ -5509,6 +5536,133 @@ As Chief Technology Officer, Walia is the architect responsible for transforming
 
       /* §9 EVENT BINDING */
       function _bindEvents() {
+        var authDialog = document.getElementById("auth-dialog");
+        var authForm = document.getElementById("auth-form");
+        var authName = authForm && authForm.querySelector(".auth-name");
+        var authTitle = document.getElementById("auth-title");
+        var authCopy = document.getElementById("auth-copy");
+        var authSubmit = document.getElementById("auth-submit");
+        var authSwitch = document.getElementById("auth-switch");
+        var authStatus = document.getElementById("auth-status");
+        var googleAuthButton = document.getElementById("google-auth");
+        var authSignOut = document.getElementById("auth-signout");
+        var authMode = "signin";
+        var authSession = null;
+        var signInButton = document.querySelector(".btn-si");
+        function _authReturnUrl() {
+          try {
+            var parent = window.parent.location;
+            return parent.origin + parent.pathname + parent.search;
+          } catch (e) {
+            return window.location.origin + "/";
+          }
+        }
+        async function _refreshAuth() {
+          try {
+            var response = await fetch("/api/auth/get-session", { credentials: "same-origin" });
+            if (!response.ok) return;
+            var result = await response.json();
+            authSession = result && result.user ? result : null;
+            if (signInButton) {
+              signInButton.setAttribute("aria-label", authSession ? "Account: " + authSession.user.name : "Sign in");
+              var textNode = Array.from(signInButton.childNodes).find(function (n) { return n.nodeType === 3 && n.textContent.trim(); });
+              if (textNode) textNode.textContent = authSession ? " " + (authSession.user.name || authSession.user.email) : "Sign In";
+            }
+          } catch (e) {}
+        }
+        if (signInButton && authDialog) {
+          signInButton.addEventListener("click", function () {
+            authMode = "signin";
+            var signedIn = Boolean(authSession);
+            if (authTitle) authTitle.textContent = signedIn ? "Your account" : "Welcome back";
+            if (authCopy) authCopy.textContent = signedIn ? "Signed in as " + authSession.user.email : "Sign in to continue your medical journey.";
+            if (authSubmit) authSubmit.textContent = "Sign In";
+            if (authSwitch) authSwitch.textContent = "New to Medical Crossway? Create an account";
+            if (authName) authName.hidden = true;
+            if (authForm) {
+              authForm.hidden = signedIn;
+              authForm.elements.password.autocomplete = "current-password";
+            }
+            if (authSwitch) authSwitch.hidden = signedIn;
+            if (authSignOut) authSignOut.hidden = !signedIn;
+            if (authStatus) authStatus.textContent = "";
+            authDialog.showModal();
+          });
+        }
+        if (googleAuthButton && authStatus) googleAuthButton.addEventListener("click", async function () {
+          authStatus.textContent = "Connecting to Google…";
+          try {
+            var response = await fetch("/api/auth/sign-in/social", {
+              method: "POST",
+              credentials: "same-origin",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ provider: "google", callbackURL: _authReturnUrl() }),
+            });
+            var result = await response.json();
+            if (!response.ok || !result.url) throw new Error(result.message || result.error || "Google sign-in could not start.");
+            window.top.location.assign(result.url);
+          } catch (error) {
+            authStatus.textContent = error.message || "Google sign-in is not configured yet.";
+          }
+        });
+        var authClose = document.querySelector("[data-auth-close]");
+        if (authClose && authDialog) authClose.addEventListener("click", function () { authDialog.close(); });
+        if (authSwitch) authSwitch.addEventListener("click", function () {
+          authMode = authMode === "signin" ? "signup" : "signin";
+          var creating = authMode === "signup";
+          if (authTitle) authTitle.textContent = creating ? "Create your account" : "Welcome back";
+          if (authCopy) authCopy.textContent = creating ? "Use one account across Medical Crossway and Research Labs." : "Sign in to continue your medical journey.";
+          if (authSubmit) authSubmit.textContent = creating ? "Create Account" : "Sign In";
+          if (authSwitch) authSwitch.textContent = creating ? "Already have an account? Sign in" : "New to Medical Crossway? Create an account";
+          if (authName) authName.hidden = !creating;
+          if (authForm) {
+            authForm.hidden = false;
+            authForm.elements.password.autocomplete = creating ? "new-password" : "current-password";
+          }
+          if (authName) authName.querySelector("input").required = creating;
+          if (authSignOut) authSignOut.hidden = true;
+          if (authSwitch) authSwitch.hidden = false;
+          if (authStatus) authStatus.textContent = "";
+        });
+        if (authForm) authForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          if (authStatus) authStatus.textContent = authMode === "signup" ? "Creating your account…" : "Signing in…";
+          var fields = new FormData(authForm);
+          var payload = {
+            email: String(fields.get("email") || "").trim(),
+            password: String(fields.get("password") || ""),
+            callbackURL: _authReturnUrl(),
+          };
+          if (authMode === "signup") payload.name = String(fields.get("name") || "").trim();
+          try {
+            var response = await fetch(authMode === "signup" ? "/api/auth/sign-up/email" : "/api/auth/sign-in/email", {
+              method: "POST",
+              credentials: "same-origin",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            var result = await response.json();
+            if (!response.ok || result.error) throw new Error(result.message || result.error?.message || "Please check your email and password.");
+            authDialog.close();
+            await _refreshAuth();
+          } catch (error) {
+            if (authStatus) authStatus.textContent = error.message || "Sign-in failed. Please try again.";
+          }
+        });
+        if (authSignOut) authSignOut.addEventListener("click", async function () {
+          authStatus.textContent = "Signing out…";
+          try {
+            var response = await fetch("/api/auth/sign-out", { method: "POST", credentials: "same-origin" });
+            if (!response.ok) throw new Error("Sign-out failed. Please try again.");
+            authSession = null;
+            authDialog.close();
+            await _refreshAuth();
+          } catch (error) {
+            authStatus.textContent = error.message || "Sign-out failed. Please try again.";
+          }
+        });
+        _refreshAuth();
+
         /* Journey cards */
         journeyGrid.addEventListener("click", function (e) {
           var c = e.target.closest(".jcard");
