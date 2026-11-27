@@ -12,6 +12,25 @@
     .auth-dialog{width:min(430px,calc(100% - 28px));border:1px solid var(--line);border-radius:14px;padding:0;background:var(--white);color:var(--ink);box-shadow:0 25px 80px #15251d33}.auth-dialog::backdrop{background:#14221db3;backdrop-filter:blur(4px)}.auth-box{padding:26px}.auth-dialog h2{font:30px/1.1 var(--serif);margin:6px 0}.auth-dialog p{font-size:13px;color:var(--muted)}.auth-dialog label{display:block;margin:12px 0;font-size:12px;color:#58625c;font-weight:650}.auth-dialog input{display:block;width:100%;border:1px solid var(--line);border-radius:7px;padding:10px 11px;margin-top:5px;background:#fff}.auth-dialog input:focus{outline:2px solid #315d5030;border-color:#729485}.auth-dialog .btn{width:100%;margin-top:8px}.auth-google{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:10px;border:1px solid var(--line);border-radius:7px;background:white;font-weight:650;color:#29352f}.auth-google:hover{background:#f3f5ef}.auth-google b{font:700 18px Arial;color:#4285f4}.auth-divider{display:flex;align-items:center;gap:10px;margin:13px 0;color:var(--muted);font-size:10px;text-transform:uppercase}.auth-divider:before,.auth-divider:after{content:"";height:1px;flex:1;background:var(--line)}.auth-status{min-height:18px;margin-top:12px;color:var(--green);font-size:12px}.auth-switch,.auth-close{border:0;background:none;color:var(--green);cursor:pointer}.auth-switch{display:block;margin:14px auto 0;font-size:12px}.auth-close{position:absolute;right:16px;top:14px;font-size:20px}.auth-dialog [hidden]{display:none!important}
     @media(max-width:680px){.top-inner{height:66px;padding:0 17px;justify-content:space-between}.brand-text{display:block}.nav{display:none;position:absolute;top:65px;left:0;right:0;background:var(--paper);padding:10px 16px 16px;border-bottom:1px solid var(--line);box-shadow:var(--shadow);flex-direction:column;align-items:stretch}.nav.open{display:flex}.nav button{text-align:left;padding:12px}.signin{display:block;position:absolute;right:55px;top:12px;padding:7px 10px;font-size:11px}.menu-toggle{display:block}main{padding:24px 17px 60px}.hero{grid-template-columns:1fr;padding:24px 0 40px}.hero-art{min-height:270px}.hero h1{font-size:49px}.section{padding:30px 0}.section-head{align-items:start;flex-direction:column}.study-grid,.split,.service-grid,.info-grid{grid-template-columns:1fr}.side-card,.order-summary{position:static}.field-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.video-grid{grid-template-columns:1fr}.tracker{grid-template-columns:repeat(4,1fr);row-gap:16px}.track-step:before{display:none}.map-grid{grid-template-columns:1fr 1fr}.dashboard-head{flex-direction:column}.study-card{padding:19px}.panel{padding:18px}.private-title{font-size:22px}.step{font-size:9px}.step-line{width:12px}}
   </style>
+  <style>
+    .contact-footer{padding:42px 28px 20px;background:#eef1e9;border-top:1px solid #dce3d9;color:var(--ink)}
+    .contact-footer .footer-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.9fr);gap:26px;align-items:stretch}
+    .contact-card{padding:26px 28px;border:1px solid #dce3d9;border-radius:16px;background:rgba(255,254,250,.82);box-shadow:0 10px 30px rgba(35,48,41,.045)}
+    .contact-card .eyebrow{margin-bottom:9px}
+    .contact-title{margin:0 0 9px;font-size:clamp(25px,3vw,34px)}
+    .contact-copy{margin:0 0 18px;color:var(--muted);font-size:13px}
+    .contact-email{display:inline-flex;align-items:center;gap:9px;padding:10px 14px;border-radius:8px;background:var(--green);color:#fff;font-size:13px;font-weight:650;transition:background .18s,transform .18s}
+    .contact-email:hover{background:var(--green-dark);transform:translateY(-1px)}
+    .contact-email-icon{font-size:16px;line-height:1}
+    .contact-social-card{display:flex;flex-direction:column;justify-content:center}
+    .contact-social-title{margin:0 0 16px;font:24px var(--serif);letter-spacing:-.025em}
+    .contact-social-links{display:flex;flex-wrap:wrap;gap:9px}
+    .contact-social-links a{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid #dce3d9;border-radius:999px;background:#fffefa;color:#40594f;font-size:12px;font-weight:650;transition:border-color .18s,background .18s,transform .18s}
+    .contact-social-links a:hover{border-color:#a9bcae;background:#f6f8f2;transform:translateY(-1px)}
+    .contact-social-links a span{color:#8b9b8e;font-size:12px}
+    .contact-footer .footer-bottom{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:17px;border-top:1px solid #dce3d9;color:#69716c;font-size:11px}
+    @media(max-width:680px){.contact-footer{padding:28px 17px 16px}.contact-footer .footer-inner{grid-template-columns:1fr;gap:13px}.contact-card{padding:21px}.contact-social-card{min-height:150px}.contact-footer .footer-bottom{grid-column:auto;flex-direction:column;gap:5px}}
+  </style>
 </head>
 <body>
 <div class="shell">
@@ -26,7 +45,7 @@
     </div>
   </header>
   <main id="app" tabindex="-1"></main>
-  <footer class="footer"><div class="footer-inner"><span>© 2025 Medical Crossway · Guiding medical journeys</span><span>Research is free to join. Authorship is earned by contribution.</span></div></footer>
+  <footer class="footer contact-footer"><div class="footer-inner"><section class="contact-card"><div class="eyebrow">Get in touch</div><h2 class="serif contact-title">Let’s move research forward.</h2><p class="contact-copy">Questions about joining a study? We’d love to hear from you.</p><a class="contact-email" href="mailto:researchlabsetal@gmail.com"><span class="contact-email-icon" aria-hidden="true">✉</span>researchlabsetal@gmail.com</a></section><section class="contact-card contact-social-card"><div class="eyebrow">Follow along</div><h3 class="contact-social-title">Research Labs et al. online</h3><nav class="contact-social-links" aria-label="Research Labs social links"><a href="https://www.instagram.com/research_labs_et_al" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a><a href="https://www.threads.com/@research_labs_et_al" target="_blank" rel="noopener noreferrer">Threads <span aria-hidden="true">↗</span></a><a href="https://x.com/Researchlabseta" target="_blank" rel="noopener noreferrer">X <span aria-hidden="true">↗</span></a><a href="https://t.me/researchlabsetal" target="_blank" rel="noopener noreferrer">Telegram <span aria-hidden="true">↗</span></a><a href="https://www.linkedin.com/company/research-labs-et-al" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></nav></section><div class="footer-bottom"><span>© 2025 Medical Crossway · Guiding medical journeys</span><span>Research is free to join. Authorship is earned by contribution.</span></div></div></footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <dialog class="auth-dialog" id="researchAuth" aria-labelledby="researchAuthTitle">
