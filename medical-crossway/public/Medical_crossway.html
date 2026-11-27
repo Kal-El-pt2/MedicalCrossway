@@ -5419,8 +5419,8 @@ As Chief Technology Officer, Walia is the architect responsible for transforming
               if (!was) li.classList.add("open");
             });
           } else {
-            li.innerHTML =
-              '<a href="' + (item.link || "#") + '">' + item.label + "</a>";
+          li.innerHTML =
+              '<a href="' + (item.link || "#") + '"' + (item.link === "/research-et-al" ? ' target="_top"' : "") + '>' + item.label + "</a>";
           }
           mainNav.appendChild(li);
         });
